@@ -1,0 +1,53 @@
+.fullWidthSection {
+  margin: 1.5rem 0;
+  padding: 0 2rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1024px) {
+  .fullWidthSection {
+    margin: 2rem auto;
+  }
+}
+
+.fullWidthHeader {
+  max-width: 48rem;
+  margin-bottom: 4rem;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pillBox {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 99px;
+  background: var(--bg);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-mid);
+}
+
+.sectionTitleBox {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 1024px) {
+  .sectionTitleBox {
+    font-size: 2rem;
+  }
+}
+
+.carouselWrapper {
+  width: 100%;
+}

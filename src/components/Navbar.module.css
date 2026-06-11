@@ -1,0 +1,476 @@
+/* ── Wrapper ── */
+.navWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+  will-change: transform, opacity;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+  pointer-events: none;
+}
+.navWrapperHidden { 
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+}
+.navWrapperHidden * {
+  pointer-events: none !important;
+}
+
+/* ── Nav bar ── */
+.nav {
+  position: relative;
+  pointer-events: all;
+  width: 100%;
+  height: 64px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 2.5rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0;
+  box-shadow: none;
+  max-width: 100%;
+  will-change: border-radius, background, height, padding, max-width;
+  transition:
+    background     0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    border-color   0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    border-radius  0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow     0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    padding        0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    height         0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    max-width      0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  /* Fade-in on load */
+  animation: navFadeIn 0.8s ease 0.1s both;
+}
+
+@keyframes navFadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.navScrolled {
+  max-width: 760px;
+  margin: 0 auto;
+  height: 48px;
+  padding: 0 1.5rem;
+  background: var(--nav-bg-scrolled);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  box-shadow:
+    0 1px 0  rgba(255,255,255,0.55) inset,
+    0 2px 4px  rgba(0,0,0,0.04),
+    0 6px 16px rgba(0,0,0,0.08),
+    0 16px 40px rgba(0,0,0,0.06);
+}
+
+/* ── Logo ── */
+.logoWrapper {
+  flex-shrink: 0;
+  justify-self: start;
+}
+.logoText {
+  font-family: var(--font-inter);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+}
+
+.logoNormal {
+  display: inline-block;
+  transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.7s ease;
+}
+
+.logoHover {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  transition: left 0.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.7s ease;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.logoText:hover .logoNormal {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.logoText:hover .logoHover {
+  left: 0;
+  opacity: 1;
+}
+
+/* ── Desktop nav list ── */
+.navList {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+.navLink {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0.45rem 0.75rem;
+  transition: color 0.3s ease;
+}
+.navLink:hover { 
+  color: var(--text); 
+}
+
+.navLinkActive {
+  color: var(--text) !important;
+}
+
+.navLinkActive .navDot {
+  transform: scale(1) !important;
+  background: var(--accent);
+}
+
+.navLinkActive .navLabel {
+  transform: translateX(2px);
+}
+
+.navDot {
+  position: absolute;
+  bottom: 0px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text);
+  transform: scale(0);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.navLink:hover .navDot {
+  transform: scale(1);
+}
+
+.navNum {
+  font-size: 0.55rem;
+  color: var(--text-dimmer);
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.navLink:hover .navNum { opacity: 1; transform: translateY(0); }
+
+.navLabel {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+.navLink:hover .navLabel { transform: translateX(2px); }
+
+.navLine {
+  position: absolute;
+  bottom: 3px;
+  left: 0.75rem;
+  right: 0.75rem;
+  height: 1px;
+  background: var(--text);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.navLink:hover .navLine { transform: scaleX(1); }
+
+/* ── Controls ── */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.themeBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-mid);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  transition: color 0.25s, border-color 0.25s, background 0.25s,
+              transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.themeBtn:hover {
+  color: var(--text);
+  background: var(--bg-surface);
+  transform: rotate(20deg) scale(1.08);
+}
+
+/* ── Staggered Menu Container ── */
+.staggeredMenuContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.staggeredMenuHidden {
+  opacity: 0;
+  pointer-events: none !important;
+}
+
+/* On Desktop, hide the logo and theme button in the staggered menu, just show the floating hamburger */
+@media (min-width: 821px) {
+  .staggeredMenuContainer :global(.sm-logo),
+  .staggeredMenuContainer :global(.sm-controls > button:first-child) /* Theme Btn */ {
+    display: none !important;
+  }
+  .staggeredMenuContainer :global(.staggered-menu-header) {
+    justify-content: flex-end !important;
+  }
+  .staggeredMenuContainer :global(.staggered-menu-header.scrolled) {
+    background: transparent !important;
+    border-bottom: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .staggeredMenuContainer :global(.sm-toggle) {
+    background: transparent;
+    padding: 0.8rem;
+    border: none;
+    box-shadow: none;
+  }
+}
+
+/* ── Hamburger button ── */
+.menuBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border-mid);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text);
+  transition: background 0.2s, border-color 0.2s;
+}
+.menuBtn:hover { background: var(--bg-surface); }
+
+/* ── Animated hamburger bars ── */
+.hamburger {
+  width: 18px;
+  height: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.bar {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 2px;
+  transform-origin: center;
+  transition:
+    transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity   0.25s ease;
+}
+
+/* Open state — top bar rotates to form X */
+.barTopOpen { transform: translateY(5.25px) rotate(45deg); }
+.barMidOpen { opacity: 0; transform: scaleX(0); }
+.barBotOpen { transform: translateY(-5.25px) rotate(-45deg); }
+
+/* ── Backdrop overlay ── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.backdropVisible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Slide-in drawer ── */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  width: min(300px, 82vw);
+  background: var(--nav-overlay-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  /* Slide out by default */
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+  /* Subtle inset glow on left edge */
+  box-shadow: -8px 0 32px rgba(0,0,0,0.12);
+}
+.drawerOpen {
+  transform: translateX(0);
+}
+
+/* ── Drawer header ── */
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.drawerLogo {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.drawerClose {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-mid);
+  background: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+}
+.drawerClose:hover { background: var(--bg-surface); }
+
+.closeBar {
+  position: absolute;
+  width: 12px;
+  height: 1.5px;
+  background: var(--text-dim);
+  border-radius: 2px;
+}
+.closeBar:first-child { transform: rotate(45deg); }
+.closeBar:last-child  { transform: rotate(-45deg); }
+
+/* ── Drawer link list ── */
+.drawerList {
+  list-style: none;
+  padding: 0.75rem 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.drawerItem {
+  opacity: 0;
+  transform: translateX(16px);
+  transition:
+    opacity   0.4s ease,
+    transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.drawerOpen .drawerItem {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s, padding-left 0.25s, background 0.2s;
+}
+.drawerLink:hover {
+  color: var(--text);
+  background: var(--bg-surface);
+  padding-left: 1.9rem;
+}
+.drawerList li:last-child .drawerLink { border-bottom: none; }
+
+.drawerNum {
+  font-size: 0.52rem;
+  color: var(--text-dimmer);
+  letter-spacing: 0.08em;
+  width: 1.4rem;
+  flex-shrink: 0;
+}
+
+.drawerLabel { flex: 1; }
+
+.drawerArrow {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s, transform 0.25s ease;
+  flex-shrink: 0;
+}
+.drawerLink:hover .drawerArrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Drawer footer ── */
+.drawerFooter {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--text-dimmer);
+  flex-shrink: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 820px) {
+  .nav { padding: 0 1.25rem; }
+  .navScrolled { padding: 0 1rem; }
+  .navWrapperScrolled { padding: 0.75rem 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav, .drawer, .backdrop, .drawerItem, .bar { transition: none; animation: none; }
+}

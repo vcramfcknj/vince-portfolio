@@ -1,0 +1,204 @@
+.wrapper {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 8rem 2rem 5rem;
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+.backLink {
+  display: inline-block;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 3rem;
+  transition: color 0.3s ease;
+}
+.backLink:hover {
+  color: var(--text);
+}
+
+.header {
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-family: var(--font-playfair);
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: var(--text-dimmer);
+  line-height: 1.6;
+  max-width: 42rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.projectLink {
+  text-decoration: none;
+  display: block;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.projectLink:hover .card {
+  border-color: var(--border-mid);
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--bg);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagePlaceholder {
+  font-family: var(--font-playfair);
+  color: var(--text-dimmer);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.projectLink:hover .image {
+  opacity: 1;
+}
+
+.tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.projectLink:hover .cardTitle {
+  color: var(--accent);
+}
+
+.cardDesc {
+  font-size: 0.875rem;
+  color: var(--text-dimmer);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.readMore {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Individual Case Study Pages Styles */
+.caseStudyWrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 8rem 2rem 5rem;
+  font-family: var(--font-sans);
+  color: var(--text);
+}
+
+.caseStudyHeader {
+  margin-bottom: 4rem;
+}
+
+.caseStudyTitle {
+  font-family: var(--font-playfair);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.contentBlock {
+  margin-bottom: 3rem;
+}
+
+.contentBlock h2 {
+  font-family: var(--font-playfair);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.contentBlock h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.contentBlock p {
+  font-size: 1rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.contentBlock ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  color: var(--text-dim);
+  margin-bottom: 1.5rem;
+}
+
+.contentBlock li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}

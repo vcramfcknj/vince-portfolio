@@ -1,0 +1,111 @@
+.contact {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.4s var(--ease-out-expo),
+              transform 0.4s var(--ease-out-expo);
+}
+.inner.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Top ── */
+.top { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.heading {
+  font-family: var(--font-bebas);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+  line-height: 0.92;
+}
+
+/* ── Mid ── */
+.mid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.desc {
+  font-family: var(--font-sans);
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+  line-height: 1.75;
+  color: var(--text-dim);
+  max-width: 480px;
+}
+
+.emailBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: clamp(0.85rem, 1.3vw, 1rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border: 1px solid var(--border-mid);
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: background 0.25s ease, border-color 0.25s ease, letter-spacing 0.25s ease;
+}
+.emailBtn:hover {
+  background: var(--bg-surface);
+  border-color: var(--border-mid);
+  letter-spacing: 0.04em;
+}
+
+/* ── Socials ── */
+.socials {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0.7rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: color 0.22s ease, border-color 0.22s ease, background 0.22s ease, transform 0.22s var(--ease-out-expo);
+}
+.socialLink:hover {
+  color: var(--text);
+  border-color: var(--border-mid);
+  background: var(--bg-surface);
+  transform: translateY(-2px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .inner { padding: 1.5rem 1.5rem; }
+  .mid { flex-direction: column; align-items: flex-start; }
+}

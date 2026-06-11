@@ -1,0 +1,225 @@
+.splitContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .splitContainer {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+  }
+}
+
+/* ── Left Column ── */
+.leftCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.description {
+  font-size: 1.05rem;
+  color: var(--text-dimmer);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 32rem;
+}
+
+.spotlightBox {
+  position: relative;
+  border-left: 2px solid var(--border-mid);
+  padding-left: 1.5rem;
+  margin-bottom: 3rem;
+  min-height: 160px; /* Prevents layout shift during animation */
+}
+
+.spotlightBadge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fbbf24; /* A nice warning/gold color matching the reference */
+  background: rgba(251, 191, 36, 0.1);
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.25rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+}
+
+.spotlightContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.activeTitle {
+  font-size: 1.75rem;
+  font-family: var(--font-playfair);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.activeIssuer {
+  font-size: 0.95rem;
+  color: var(--text-dimmer);
+  margin-bottom: 1.25rem;
+}
+.activeIssuer strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.tagsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.tagPill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fbbf24;
+  background: transparent;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  padding: 0.35rem 0.85rem;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.metricsRow {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.metric h4 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.metric span {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+}
+
+/* ── Right Column ── */
+.rightCol {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px; /* Space for the stacked cards */
+  padding-bottom: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .rightCol {
+    justify-content: flex-start;
+    padding-left: 2rem;
+  }
+}
+
+.carouselStack {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 320px;
+  perspective: 1000px;
+}
+
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border-mid);
+  border-radius: 0.75rem;
+  box-shadow: -10px 20px 40px -10px rgba(0,0,0,0.15); /* Shadow adjusted for diagonal stack */
+  overflow: hidden;
+  transform-origin: bottom left;
+  cursor: pointer;
+}
+
+/* Add a subtle border highlight to the top edge for realism */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.cardContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.certImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Certificates usually shouldn't be cropped */
+  background: white; /* Force white background for cert images so transparent PNGs look right */
+}
+
+.fallbackIcon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--border-mid);
+  background: var(--bg-surface);
+}
+
+.fallbackText {
+  font-size: 0.85rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .rightCol {
+    height: 340px;
+  }
+  .carouselStack {
+    height: 240px;
+    max-width: 340px;
+  }
+  .metric h4 {
+    font-size: 1.5rem;
+  }
+  .metric span {
+    font-size: 0.6rem;
+  }
+  .metricsRow {
+    gap: 1.5rem;
+  }
+}

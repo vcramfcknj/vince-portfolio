@@ -1,0 +1,77 @@
+.about {
+  background: var(--bg);
+  padding: 2rem 0;
+  border-top: 1px solid var(--border);
+  transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+.inner {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ── Bio text + word-by-word reveal ── */
+.bioText {
+  font-family: var(--font-sans);
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-dim);
+  text-align: justify;
+  hyphens: auto;
+}
+
+.wordWrap { display: inline; }
+
+.word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s var(--ease-out-expo),
+              transform 0.45s var(--ease-out-expo);
+}
+
+.bioVisible .word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.actionWrap {
+  margin-top: 3rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
+}
+
+.actionVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.readMoreBtn {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--border-mid);
+  border-radius: 99px;
+  background: var(--bg);
+  transition: all 0.25s ease;
+}
+
+.readMoreBtn:hover {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .about { padding: 1.5rem 0; }
+  .inner { padding: 0 1.5rem; }
+  .bioText { text-align: left; font-size: 0.85rem; }
+}
