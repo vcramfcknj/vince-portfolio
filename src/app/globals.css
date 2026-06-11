@@ -15,7 +15,10 @@
   --nav-overlay-bg:      rgba(12,12,12,0.97);
   --theme-icon:          '☀';
   --hero-bg:             #b0aba3;
+}
 
+/* ─── Global Variables (Fonts & Animations) ─── */
+:root {
   --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out:      cubic-bezier(0.4, 0, 0.2, 1);
 
