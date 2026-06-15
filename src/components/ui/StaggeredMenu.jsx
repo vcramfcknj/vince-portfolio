@@ -431,8 +431,10 @@ export const StaggeredMenu = ({
 
           <div className="sm-controls">
             <button
+              type="button"
               onClick={toggleTheme}
               className={styles.themeBtn}
+              style={{ pointerEvents: 'auto', position: 'relative', zIndex: 50 }}
               aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             >
               {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
