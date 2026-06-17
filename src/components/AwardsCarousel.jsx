@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import CardSwap, { Card } from '@/components/ui/CardSwap'
 import styles from './AwardsCarousel.module.css'
@@ -9,138 +9,138 @@ const initialAwards = [
   {
     id: 1,
     title: 'Web & Mobile Dev of the Year',
-    issuer: 'ISPSC · 2026',
+    issuer: 'ISPSC',
+    year: '2026',
     image: '/images/certificates/web&mobile.jpg',
     tags: ['Web Dev', 'Mobile', 'React', 'Next.js'],
-    titleColor: '#60a5fa', // Blue
-    titleFont: 'var(--font-bebas)'
+    description: 'Awarded for exemplary skills and notable distinction in developing intelligent and highly performant web applications.'
   },
   {
     id: 2,
     title: 'Entry-Level Robotics',
-    issuer: 'Tech Institute · 2026',
+    issuer: 'Tech Institute',
+    year: '2026',
     image: '/images/certificates/robotics.jpg',
     tags: ['Robotics', 'Automation', 'C++'],
-    titleColor: '#fcd34d', // Yellow
-    titleFont: 'var(--font-playfair)'
+    description: 'Certification demonstrating foundational expertise in embedded systems and automated robotic solutions.'
   },
   {
     id: 3,
     title: '220-Hour OJT / Internship',
-    issuer: 'Erovoutika Ph, Inc. · 2026',
+    issuer: 'Erovoutika Ph, Inc.',
+    year: '2026',
     image: '/images/certificates/Intersnhip.jpg',
-    tags: ['OJT', 'Full Stack', 'Web Development'],
-    titleColor: '#34d399', // Emerald
-    titleFont: 'var(--font-sans)'
+    tags: ['OJT', 'Full Stack', 'Web'],
+    description: 'Completed extensive on-the-job training, deploying real-world software solutions and collaborating in an agile team.'
   }
 ]
 
 export default function AwardsCarousel() {
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const activeCard = initialAwards[activeIndex]
-  const issuerParts = activeCard?.issuer.split('·') || []
-  const issuerName = issuerParts[0]?.trim() || ''
-  const issuerYear = issuerParts[1]?.trim() || ''
+  const activeAward = initialAwards[activeIndex]
 
   return (
     <div className={styles.splitContainer}>
-      
-      {/* ── LEFT COLUMN ── */}
+      {/* Left Column: Details of Active Award */}
       <div className={styles.leftCol}>
         <p className={styles.description}>
-          Continuously upskilling through industry-recognized programs. Each certificate represents dedicated learning in areas ranging from full-stack development and cloud computing to cybersecurity.
+          A curated collection of my credentials, academic achievements, and industry training.
+          Hover over the stack to pause or click/wait to swap cards.
         </p>
 
         <div className={styles.spotlightBox}>
-          <div className={styles.spotlightBadge}>SPOTLIGHT CREDENTIAL</div>
-          
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode="wait">
             <motion.div
-              key={activeCard?.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
+              key={activeIndex}
+              initial={{ opacity: 0, x: -15 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 15 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className={styles.spotlightContent}
             >
-              <h3 
-                className={styles.activeTitle}
-                style={{ 
-                  color: activeCard?.titleColor || 'var(--text)',
-                  fontFamily: activeCard?.titleFont || 'var(--font-playfair)' 
-                }}
-              >
-                {activeCard?.title}
-              </h3>
-              <p className={styles.activeIssuer}>
-                Issued by <strong>{issuerName}</strong> {issuerYear && `• ${issuerYear}`}
-              </p>
+              <span className={styles.spotlightBadge}>
+                {activeAward.issuer} • {activeAward.year}
+              </span>
               
+              <h3 className={styles.activeTitle}>
+                {activeAward.title}
+              </h3>
+              
+              <p className="text-[var(--text)] text-[clamp(1.05rem,1.3vw,1.25rem)] font-light leading-[1.6] mb-8 max-w-[32rem]">
+                {activeAward.description}
+              </p>
+
               <div className={styles.tagsRow}>
-                {activeCard?.tags.map(tag => (
-                  <span key={tag} className={styles.tagPill}>{tag}</span>
+                {activeAward.tags.map((tag) => (
+                  <span key={tag} className={styles.tagPill}>
+                    {tag}
+                  </span>
                 ))}
               </div>
             </motion.div>
           </AnimatePresence>
         </div>
 
+        {/* Metrics Section */}
         <div className={styles.metricsRow}>
           <div className={styles.metric}>
             <h4>3+</h4>
-            <span>CERTIFICATES</span>
+            <span>Certificates</span>
+          </div>
+          <div className={styles.metric}>
+            <h4>220+</h4>
+            <span>Internship Hours</span>
           </div>
           <div className={styles.metric}>
             <h4>1</h4>
-            <span>DEV AWARD</span>
-          </div>
-          <div className={styles.metric}>
-            <h4>20+</h4>
-            <span>SKILLS GAINED</span>
+            <span>Year Dev Experience</span>
           </div>
         </div>
       </div>
 
-      {/* ── RIGHT COLUMN (CAROUSEL) ── */}
+      {/* Right Column: CardSwap Deck */}
       <div className={styles.rightCol}>
-        <CardSwap
-          cardDistance={50}
-          verticalDistance={60}
-          delay={3500}
-          pauseOnHover={true}
-          onSwap={(idx) => setActiveIndex(idx)}
-          width="min(calc(100vw - 120px), 420px)"
-          height={300}
-        >
-          {initialAwards.map((card, index) => (
-            <Card key={card.id}>
-              <div className={styles.cardContent}>
-                <div className={styles.cardHighlight} />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={card.image} 
-                  alt={card.title} 
-                  className={styles.certImage} 
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextElementSibling.style.display = 'flex';
-                  }} 
-                />
-                <div className={styles.fallbackIcon} style={{ display: 'none' }}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <polyline points="21 15 16 10 5 21"></polyline>
-                  </svg>
-                  <span className={styles.fallbackText}>Image pending</span>
+        <div className={styles.carouselStack}>
+          <CardSwap
+            width="100%"
+            height="100%"
+            cardDistance={25}
+            verticalDistance={30}
+            delay={4500}
+            pauseOnHover={true}
+            onSwap={(idx) => setActiveIndex(idx)}
+            skewAmount={3}
+            easing="elastic"
+          >
+            {initialAwards.map((award, index) => (
+              <Card key={award.id} customClass={styles.card}>
+                <div className={styles.cardContent}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={award.image}
+                    alt={award.title}
+                    className={styles.certImage}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextElementSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="hidden absolute inset-0 flex-col items-center justify-center gap-4 bg-[var(--bg-surface)] text-[var(--text-dimmer)]">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span className="text-sm tracking-widest uppercase">Image pending</span>
+                  </div>
+                  <div className={styles.cardHighlight} />
                 </div>
-              </div>
-            </Card>
-          ))}
-        </CardSwap>
+              </Card>
+            ))}
+          </CardSwap>
+        </div>
       </div>
-
     </div>
   )
 }

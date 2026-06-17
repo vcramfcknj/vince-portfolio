@@ -26,15 +26,18 @@ const slideUp = {
 
 interface PreloaderProps {
   onComplete?: () => void
+  onExit?: () => void
 }
 
-export default function Preloader({ onComplete }: PreloaderProps) {
+export default function Preloader({ onComplete, onExit }: PreloaderProps) {
  
   const [index, setIndex] = useState(0)
   const [dimension, setDimension] = useState({ width: 0, height: 0 })
   const [isExiting, setIsExiting] = useState(false)
 
   useEffect(() => {
+    ;(window as any).__isCurtainDown = true;
+    
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setDimension({ width: window.innerWidth, height: window.innerHeight })
     
@@ -68,6 +71,9 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       // Start exit animation after showing the last word
       setTimeout(() => {
         setIsExiting(true)
+        ;(window as any).__isCurtainDown = false
+        window.dispatchEvent(new CustomEvent('curtain-exiting', { detail: { duration: 0.8 } }))
+        onExit?.()
         // Call onComplete after exit animation
         setTimeout(() => {
           onComplete?.()

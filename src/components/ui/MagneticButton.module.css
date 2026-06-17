@@ -1,0 +1,64 @@
+.magneticButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.6rem;
+  background: transparent;
+  color: var(--btn-color);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 999px;
+  border: 1px solid var(--btn-border);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  cursor: pointer;
+  will-change: transform;
+  /* Prevent text selection during interaction */
+  user-select: none;
+  /* Smooth border transition if needed */
+  transition: border-color 0.3s ease;
+}
+
+.magneticButton:hover .content {
+  color: var(--btn-hover-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magneticButton {
+    transition: none;
+  }
+}
+
+.fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Make fill large enough to cover the button from any corner */
+  width: 250%;
+  padding-bottom: 250%;
+  background-color: var(--btn-fill);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: color 0.4s ease; /* Ensure smooth text color change */
+}
+
+.text,
+.icon {
+  display: inline-block;
+  will-change: transform;
+}

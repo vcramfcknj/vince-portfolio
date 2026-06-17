@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 import { useScroll } from '@/context/ScrollContext'
 
 function WorldIcon() {
@@ -100,10 +101,12 @@ function MarqueeTrack() {
   )
 }
 
-export default function Hero() {
+export default function Hero({ isFirstLoad = false }) {
   const { scrollProgress } = useScroll()
   const [isMobile, setIsMobile] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [shouldAnimate, setShouldAnimate] = useState(false)
+  const [animDuration, setAnimDuration] = useState(0.6)
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -111,8 +114,25 @@ export default function Hero() {
     const check = () => setIsMobile(window.innerWidth <= 768)
     check()
     window.addEventListener('resize', check, { passive: true })
-    return () => window.removeEventListener('resize', check)
-  }, [])
+
+    // Check if the curtain is down OR if this is the first load (Preloader will show)
+    if (window.__isCurtainDown || isFirstLoad) {
+      const handler = (e) => {
+        if (e && e.detail && e.detail.duration) {
+          setAnimDuration(e.detail.duration)
+        }
+        setShouldAnimate(true)
+      }
+      window.addEventListener('curtain-exiting', handler)
+      return () => {
+        window.removeEventListener('resize', check)
+        window.removeEventListener('curtain-exiting', handler)
+      }
+    } else {
+      setShouldAnimate(true)
+      return () => window.removeEventListener('resize', check)
+    }
+  }, [isFirstLoad])
 
   return (
     <section
@@ -128,84 +148,88 @@ export default function Hero() {
         padding: '0 2rem'
       }}
     >
-
-
-      {/* ── Right Text Block ── */}
-      {mounted && (
-        <div
-          className="hero-fade-right"
-          style={{
-            position: 'absolute',
-            right: isMobile ? '1.5rem' : '6rem',
-            top: isMobile ? '35%' : '45%',
-            transform: `translateY(${-50 + scrollProgress * 15}%)`,
-            zIndex: 10,
-            color: '#ffffff',
-            fontFamily: 'var(--font-inter)',
-            textAlign: isMobile ? 'right' : 'left',
-          }}
-        >
-          <div style={{ marginBottom: '1rem', opacity: 0.8, display: 'flex', justifyContent: isMobile ? 'flex-end' : 'flex-start' }}>
-            <ArrowDownRightIcon />
-          </div>
-          <div style={{
-            fontSize: isMobile ? '1.8rem' : '2.2rem',
-            fontWeight: 400,
-            lineHeight: 1.2,
-            letterSpacing: '-0.02em'
-          }}>
-            BS IT Student<br />
-            & Developer
-          </div>
-        </div>
-      )}
-
-      {/* ── Portrait ── */}
-      {mounted && (
-        <div
-          className="hero-photo"
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: isMobile ? '90%' : '45%',
-            height: isMobile ? '65%' : '85%',
-            zIndex: 5,
-            opacity: 1,
-          }}
-        >
-          <Image
-            src="/images/vince.png"
-            alt="Vince Rubang"
-            fill
-            sizes="(max-width: 768px) 90vw, 45vw"
-            style={{
-              objectFit: 'contain',
-              objectPosition: 'bottom center',
-            }}
-            priority
-          />
-        </div>
-      )}
-
-      {/* ── Background Marquee ── */}
-      <div
-        className="hero-marquee"
-        style={{
-          position: 'absolute',
-          bottom: '5%',
-          left: 0,
-          width: '100%',
-          zIndex: 2, /* BEHIND the portrait */
-          pointerEvents: 'none',
-          opacity: Math.max(0, 1 - scrollProgress * 0.8),
-        }}
+      <motion.div
+        initial={{ y: "100vh" }}
+        animate={{ y: shouldAnimate ? 0 : "100vh" }}
+        transition={{ duration: animDuration, ease: [0.76, 0, 0.24, 1] }}
+        style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
       >
-        <MarqueeTrack />
-      </div>
+        {/* ── Right Text Block ── */}
+        {mounted && (
+          <div
+            className="hero-fade-right"
+            style={{
+              position: 'absolute',
+              right: isMobile ? '1.5rem' : '6rem',
+              top: isMobile ? '35%' : '45%',
+              transform: `translateY(${-50 + scrollProgress * 15}%)`,
+              zIndex: 10,
+              color: '#ffffff',
+              fontFamily: 'var(--font-inter)',
+              textAlign: isMobile ? 'right' : 'left',
+            }}
+          >
+            <div style={{ marginBottom: '1rem', opacity: 0.8, display: 'flex', justifyContent: isMobile ? 'flex-end' : 'flex-start' }}>
+              <ArrowDownRightIcon />
+            </div>
+            <div style={{
+              fontSize: isMobile ? '1.8rem' : '2.2rem',
+              fontWeight: 400,
+              lineHeight: 1.2,
+              letterSpacing: '-0.02em'
+            }}>
+              BS InfoTech Graduate<br />
+              & Developer
+            </div>
+          </div>
+        )}
 
-      <style>{`
+        {/* ── Portrait ── */}
+        {mounted && (
+          <div
+            className="hero-photo"
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: isMobile ? '90%' : '45%',
+              height: isMobile ? '65%' : '85%',
+              zIndex: 5,
+              opacity: 1,
+            }}
+          >
+            <Image
+              src="/images/vince.png"
+              alt="Vince Rubang"
+              fill
+              sizes="(max-width: 768px) 90vw, 45vw"
+              style={{
+                objectFit: 'contain',
+                objectPosition: 'bottom center',
+              }}
+              priority
+            />
+          </div>
+        )}
+
+        {/* ── Background Marquee ── */}
+        <div
+          className="hero-marquee"
+          style={{
+            position: 'absolute',
+            bottom: '5%',
+            left: 0,
+            width: '100%',
+            zIndex: 2, /* BEHIND the portrait */
+            pointerEvents: 'none',
+            opacity: Math.max(0, 1 - scrollProgress * 0.8),
+          }}
+        >
+          <MarqueeTrack />
+        </div>
+
+        <style>{`
         .hero-fade-left { animation: heroFadeInLeft 1s cubic-bezier(0.25, 1, 0.5, 1) 0.2s both; }
         .hero-fade-right { animation: heroFadeInRight 1s cubic-bezier(0.25, 1, 0.5, 1) 0.3s both; }
         .hero-photo { animation: heroFadeUp 1s cubic-bezier(0.25, 1, 0.5, 1) 0.1s both; }
@@ -228,6 +252,7 @@ export default function Hero() {
           .hero-fade-left, .hero-fade-right, .hero-photo, .hero-marquee { animation: none; }
         }
       `}</style>
+      </motion.div>
     </section>
   )
 }

@@ -14,6 +14,13 @@ export function ThemeProvider({ children }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(stored)
     document.documentElement.setAttribute('data-theme', stored)
+
+    // Ensure preloader plays again on hard refresh by clearing its session flag
+    const handleBeforeUnload = () => {
+      sessionStorage.removeItem('hasShownPreloader')
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [])
 
   useEffect(() => {

@@ -1,22 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&display=swap');
-
-/* ─── Dark Mode Tokens ────────────────── */
-[data-theme="dark"] {
-  --bg:               #0c0c0c;
-  --bg-surface:       rgba(232,228,220,0.03);
-  --text:             #e8e4dc;
-  --text-dim:         rgba(232,228,220,0.48);
-  --text-dimmer:      rgba(232,228,220,0.22);
-  --accent:           #455ce9;
-  --border:           rgba(232,228,220,0.08);
-  --border-mid:       rgba(232,228,220,0.16);
-
-  --nav-bg-scrolled:     rgba(153,153,153,0.88);
-  --nav-overlay-bg:      rgba(12,12,12,0.97);
-  --theme-icon:          '☀';
-  --hero-bg:             #b0aba3;
-}
-
+@import "tailwindcss";
 /* ─── Global Variables (Fonts & Animations) ─── */
 :root {
   --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
@@ -43,6 +25,23 @@
   --nav-overlay-bg:   rgba(255,255,255,0.97);
 }
 
+/* ─── Dark Mode Tokens ────────────────── */
+[data-theme="dark"] {
+  --bg:               #0c0c0c;
+  --bg-surface:       rgba(232,228,220,0.03);
+  --text:             #e8e4dc;
+  --text-dim:         rgba(232,228,220,0.48);
+  --text-dimmer:      rgba(232,228,220,0.22);
+  --accent:           #455ce9;
+  --border:           rgba(232,228,220,0.08);
+  --border-mid:       rgba(232,228,220,0.16);
+
+  --nav-bg-scrolled:     rgba(153,153,153,0.88);
+  --nav-overlay-bg:      rgba(12,12,12,0.97);
+  --theme-icon:          '☀';
+  --hero-bg:             #b0aba3;
+}
+
 /* ─── Reset ──────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -60,7 +59,7 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   /* Smooth background/color transition when switching theme */
   transition: background 0.35s var(--ease-in-out),
               color 0.35s var(--ease-in-out);

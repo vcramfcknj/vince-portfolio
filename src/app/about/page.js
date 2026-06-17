@@ -1,6 +1,14 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import AwardsCarousel from '@/components/AwardsCarousel'
+import { Marquee } from '@/components/ui/Marquee'
+import MagneticButton from '@/components/ui/MagneticButton'
+import CircularText from '@/components/ui/CircularText'
+import GlareHover from '@/components/ui/GlareHover'
+import Lanyard from '@/components/ui/Lanyard'
+import { FaEarthAmericas } from 'react-icons/fa6'
+import { icons, DefaultIcon } from '@/components/Skills'
 import styles from './AboutPage.module.css'
 
 export const metadata = {
@@ -13,243 +21,220 @@ export default function AboutPage() {
       
       {/* ── HERO SECTION ── */}
       <section className={styles.heroSection}>
-        <div className={styles.heroGrid}>
-          
-          <div className={styles.heroLeft}>
-            <span className={styles.pill}>About Me</span>
-            <h1 className={styles.title}>Hi, I&apos;m Vince Rubang</h1>
-            <p className={styles.subtitle}>
-              A passionate developer, IT student, and lifelong learner.
+        <div className={styles.heroTop}>
+          <h1 className={styles.heroHugeTitle}>
+            A passionate developer,<br />
+            IT graduate, and<br />
+            lifelong learner.
+          </h1>
+        </div>
+
+        <div className={styles.heroDividerContainer}>
+          <hr className={styles.heroDivider} />
+          <div className={styles.heroBadge}>
+            <CircularText
+              text="v1nchnzo * v1nchnzo * "
+              onHover="speedUp"
+              spinDuration={20}
+              className={styles.customCircularText}
+            />
+            <FaEarthAmericas className={styles.innerGlobe} />
+          </div>
+        </div>
+
+        <div className={styles.heroBottomGrid}>
+          <div className={styles.heroBottomLeft}>
+            <div className={styles.heroArrow}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+            <p className={styles.heroDescription}>
+              I am a detail-oriented BS Information Technology graduate specializing in crafting intelligent, high-performance web applications and systems. I believe in solving real-world problems through clean code and seamless digital experiences.
+              <br/><br/>
+              <span style={{ color: 'var(--text)', opacity: 1 }}>Always exploring.</span>
             </p>
-            <p className={styles.description}>
-              I am a detail-oriented BS Information Technology student specializing in crafting intelligent, high-performance web applications and systems. My work spans across Full Stack Development, UI/UX Design, and Cybersecurity. I believe in solving real-world problems through clean code and seamless digital experiences.
+          </div>
+
+          <div className={styles.heroBottomRight}>
+            <div className={styles.coverImageWrapper}>
+              <Image 
+                src="/images/about_coverImage.JPG" 
+                alt="Vince Cover Image"
+                width={768}
+                height={1024}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
+                className={styles.coverImage}
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── DRIVES SECTION ── */}
+      <section className={styles.drivesSection}>
+        <h2 className={styles.drivesTitle}>
+          What Drives Me<span className={styles.ellipsis}>...</span>
+        </h2>
+        
+        <div className={styles.drivesGrid}>
+          <GlareHover 
+            className={styles.drivesCard} 
+            background="transparent" 
+            borderColor="transparent" 
+            width="100%" 
+            height="100%"
+          >
+            <div className={styles.cardNumber}>01</div>
+            <h3 className={styles.cardTitle}>Problem Solving</h3>
+            <p className={styles.cardDesc}>
+              Tackling complex logic challenges and optimizing algorithms to create elegant, efficient solutions.
             </p>
-            <div className={styles.socialContainer}>
-              <div className={styles.socials}>
-                <a href="https://github.com/v1nchnzo" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                  </svg>
-                  GitHub
-                </a>
-                <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                  </svg>
-                  LinkedIn
-                </a>
-                <a href="mailto:vincerubang28@gmail.com" className={styles.socialBtn}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                    <polyline points="22,6 12,13 2,6"/>
-                  </svg>
-                  Email
-                </a>
-              </div>
-              <Link href="/#contact" className={styles.contactBtn}>
-                Contact Me
-              </Link>
-            </div>
-          </div>
-
-          <div className={styles.heroRight}>
-            <div className={styles.imageContainer}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/AboutMe.JPG" alt="Vince Rubang" className={styles.portrait} />
-              <div className={styles.glowBlue}></div>
-              <div className={styles.glowGray}></div>
-            </div>
-          </div>
-          
+          </GlareHover>
+          <GlareHover 
+            className={styles.drivesCard} 
+            background="transparent" 
+            borderColor="transparent" 
+            width="100%" 
+            height="100%"
+          >
+            <div className={styles.cardNumber}>02</div>
+            <h3 className={styles.cardTitle}>Continuous Learning</h3>
+            <p className={styles.cardDesc}>
+              Staying at the forefront of technology by exploring new frameworks, tools, and cybersecurity concepts.
+            </p>
+          </GlareHover>
+          <GlareHover 
+            className={styles.drivesCard} 
+            background="transparent" 
+            borderColor="transparent" 
+            width="100%" 
+            height="100%"
+          >
+            <div className={styles.cardNumber}>03</div>
+            <h3 className={styles.cardTitle}>Building Impactful Products</h3>
+            <p className={styles.cardDesc}>
+              Developing software that goes beyond code to deliver real value and seamless user experiences.
+            </p>
+          </GlareHover>
         </div>
       </section>
 
-      {/* ── METRICS GRID ── */}
-      <section className={styles.metricsSection}>
-        <div className={styles.metricsGrid}>
-          <div className={styles.metricCard}>
-            <div className={styles.metricValue}>B.S. IT</div>
-            <div className={styles.metricLabel}>Information Tech</div>
-          </div>
-          <div className={styles.metricCard}>
-            <div className={styles.metricValue}>ISPSC</div>
-            <div className={styles.metricLabel}>State College</div>
-          </div>
-          <div className={styles.metricCard}>
-            <div className={styles.metricValue}>Full Stack</div>
-            <div className={styles.metricLabel}>Web & Mobile</div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SPLIT: JOURNEY & DRIVES ME ── */}
-      <section className={styles.splitSection}>
-        <div className={styles.splitGrid}>
-          
-          <div className={styles.splitLeft}>
-            <h2 className={styles.sectionTitle}>Educational Journey</h2>
-            <div className={styles.timeline}>
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineIcon}></div>
-                <h3>Bachelor of Science in Information Technology</h3>
-                <p>Ilocos Sur Polytechnic State College | 2022 – Present</p>
-              </div>
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineIcon}></div>
-                <h3>Senior High School</h3>
-                <p>Candon National High School | 2017 – 2019</p>
-              </div>
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineIcon}></div>
-                <h3>Junior High School</h3>
-                <p>Candon National High School | 2013 – 2017</p>
-              </div>
-              <div className={styles.timelineItem}>
-                <div className={styles.timelineIconActive}></div>
-                <h3>Elementary School</h3>
-                <p>Candon North Central School | 2007 – 2013</p>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.splitRight}>
-            <h2 className={styles.sectionTitle}>What Drives Me</h2>
-            <div className={styles.driveGrid}>
-              <div className={styles.driveCard}>
-                <div className={styles.driveIcon}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                </div>
-                <div>
-                  <h3>Problem Solving</h3>
-                  <p>Tackling complex logic challenges and optimizing algorithms to create elegant, efficient solutions.</p>
-                </div>
-              </div>
-              <div className={styles.driveCard}>
-                <div className={styles.driveIcon}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                </div>
-                <div>
-                  <h3>Continuous Learning</h3>
-                  <p>Staying at the forefront of technology by exploring new frameworks, tools, and cybersecurity concepts.</p>
-                </div>
-              </div>
-              <div className={styles.driveCard}>
-                <div className={styles.driveIcon}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                </div>
-                <div>
-                  <h3>Building Impactful Products</h3>
-                  <p>Developing software that goes beyond code to deliver real value and seamless user experiences.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-        </div>
-      </section>
 
       {/* ── FULL WIDTH: AWARDS & CERTIFICATIONS ── */}
       <section className={styles.fullWidthSection}>
         <div className={styles.fullWidthHeader}>
-            <span className={styles.pillBox}>What I&apos;ve Earned</span>
-            <h2 className={styles.sectionTitleBox}>Certificates & Achievements</h2>
+            <h2 className={styles.drivesTitle} style={{ marginBottom: '2rem' }}>What I&apos;ve Earned</h2>
           </div>
           <div className={styles.carouselWrapper}>
             <AwardsCarousel />
           </div>
       </section>
 
-      {/* ── SEMINARS & TRAINING ── */}
-      <section className={styles.cardsSection}>
-        <div className={styles.cardsGrid}>
-          <div className={styles.bigCard}>
-            <h2 className={styles.sectionTitle}>Seminars & Conferences</h2>
-            <div className={styles.cardBlock}>
-              <h3>Cyber Security and Ethical Hacking</h3>
-              <p>Dr. Wilber B. Sabado, College of Information Sciences</p>
-            </div>
-            <p className={styles.cardDesc}>
-              Gained hands-on exposure to advanced cybersecurity concepts and offensive security techniques. Conducted ethical hacking exercises, network vulnerability scanning, and forensic packet analysis.
-            </p>
-            <div className={styles.tagList}>
-              <span>Security Research</span>
-              <span>Packet Analysis</span>
-              <span>Vulnerability</span>
-            </div>
-          </div>
-          <div className={styles.bigCard}>
-            <h2 className={styles.sectionTitle}>Leadership & Training</h2>
-            <div className={styles.cardBlock}>
-              <h3>2nd iSite National Conference — Innovate360</h3>
-              <p>Navigating the Frontier of Digital Education</p>
-            </div>
-            <p className={styles.cardDesc}>
-              Expanded knowledge on the modern IT workplace, empowering digital skills, and participating in the 14th IT Skills Olympics at the University of Makati.
-            </p>
-            <div className={styles.tagList}>
-              <span>Leadership</span>
-              <span>Digital Education</span>
-              <span>Competitions</span>
-            </div>
-          </div>
+
+
+      <div style={{ position: 'relative', width: '100%' }}>
+        {/* LANYARD BACKGROUND */}
+        <div className={styles.lanyardContainer}>
+           <Lanyard 
+             position={[0, 1.2, 16]} 
+             gravity={[0, -40, 0]} 
+             frontImage="/images/id.jpg"
+           />
         </div>
-      </section>
 
-      {/* ── SPLIT: TECH STACK & CURRENTLY DOING ── */}
-      <section className={styles.splitSection}>
-        <div className={styles.splitGrid}>
-          
-          <div className={styles.splitLeft}>
-            <h2 className={styles.sectionTitle}>Tech Stack Showcase</h2>
-            <div className={styles.techTagsWrap}>
-              {['HTML', 'CSS', 'JavaScript', 'React', 'Next.js', 'PHP', 'MySQL', 'MongoDB', 'Firebase', 'Tailwind', 'Git', 'Figma', 'VS Code', 'Cybersecurity', 'Flutter', 'Dart', 'Cloud'].map(tech => (
-                <div key={tech} className={styles.techTagItem}>{tech}</div>
-              ))}
-            </div>
-          </div>
-
-          <div className={styles.splitRight}>
-            <h2 className={styles.sectionTitle}>What I&apos;m Currently Doing</h2>
-            <ul className={styles.doingList}>
-              <li>
-                <div className={styles.doingIcon}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-                <span>Building Full Stack Projects</span>
-              </li>
-              <li>
-                <div className={styles.doingIcon}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-                <span>Exploring Cross-Platform Apps with Flutter</span>
-              </li>
-              <li>
-                <div className={styles.doingIcon}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-                <span>Studying Cloud Architecture</span>
-              </li>
-              <li>
-                <div className={styles.doingIcon}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-                <span>Completing my BS Information Technology</span>
-              </li>
-            </ul>
-          </div>
-          
+        {/* ── DIVIDER ── */}
+        <div className={styles.heroDividerContainer} style={{ marginBottom: '6rem', position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+          <hr className={styles.heroDivider} />
         </div>
-      </section>
 
-      {/* ── QUOTE ── */}
-      <section className={styles.quoteSection}>
-        <blockquote className={styles.quoteBlock}>
-          <span className={styles.quoteMarkLeft}>&quot;</span>
-          Code is a medium, but impact is the goal.
-          <span className={styles.quoteMarkRight}>&quot;</span>
-        </blockquote>
-        <div className={styles.quoteAuthor}>— Vince Rubang</div>
-      </section>
+        {/* ── SPLIT: TECH STACK & CURRENTLY DOING ── */}
+        <section className={styles.splitSection} style={{ position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+          <div className={styles.splitGrid}>
+            
+            <div className={styles.splitLeft} style={{ pointerEvents: 'auto' }}>
+              <h2 className={styles.sectionTitle}>Tech Stack Showcase</h2>
+              <div className={styles.techTagsWrap}>
+                <Marquee pauseOnHover className={styles.marqueeRow}>
+                  {['HTML/CSS', 'JavaScript', 'React', 'Next.js', 'PHP', 'MySQL', 'MongoDB'].map(tech => (
+                    <MagneticButton 
+                      key={tech}
+                      text={tech}
+                      icon={<div className={styles.techIcon}>{icons[tech] || <DefaultIcon />}</div>}
+                      className={styles.techTagItem}
+                      color="var(--text-dim)"
+                      bgColor="var(--bg)"
+                      fillColor="var(--text)"
+                      textColorHover="var(--bg)"
+                      borderColor="var(--border-mid)"
+                      as="div"
+                    />
+                  ))}
+                </Marquee>
+                <Marquee reverse pauseOnHover className={styles.marqueeRow}>
+                  {['Firebase', 'Tailwind', 'Git', 'Figma', 'VS Code', 'Cybersecurity', 'Flutter', 'Cloud'].map(tech => (
+                    <MagneticButton 
+                      key={tech}
+                      text={tech}
+                      icon={<div className={styles.techIcon}>{icons[tech] || <DefaultIcon />}</div>}
+                      className={styles.techTagItem}
+                      color="var(--text-dim)"
+                      bgColor="var(--bg)"
+                      fillColor="var(--text)"
+                      textColorHover="var(--bg)"
+                      borderColor="var(--border-mid)"
+                      as="div"
+                    />
+                  ))}
+                </Marquee>
+              </div>
+            </div>
+
+            <div className={styles.splitRight}>
+              <h2 className={styles.sectionTitle}>What I&apos;m Currently Doing</h2>
+              <ul className={styles.doingList}>
+                <li>
+                  <div className={styles.doingIcon}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  <span>Building Full Stack Projects</span>
+                </li>
+                <li>
+                  <div className={styles.doingIcon}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  <span>Exploring Cross-Platform Apps with Flutter</span>
+                </li>
+                <li>
+                  <div className={styles.doingIcon}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  <span>Studying Cloud Architecture</span>
+                </li>
+                <li>
+                  <div className={styles.doingIcon}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </div>
+                  <span>Completing my BS Information Technology</span>
+                </li>
+              </ul>
+            </div>
+            
+          </div>
+        </section>
+
+        {/* ── QUOTE ── */}
+        <section className={styles.quoteSection} style={{ position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+          <blockquote className={styles.quoteBlock} style={{ pointerEvents: 'auto' }}>
+            <span className={styles.quoteMarkLeft}>&quot;</span>
+            Code is a medium, but impact is the goal.
+            <span className={styles.quoteMarkRight}>&quot;</span>
+          </blockquote>
+          <div className={styles.quoteAuthor} style={{ pointerEvents: 'auto' }}>— Vince Rubang</div>
+        </section>
+      </div>
 
     </div>
   )

@@ -1,5 +1,5 @@
 .fullWidthSection {
-  margin: 1.5rem 0;
+  margin: 6rem 0;
   padding: 0 2rem;
   max-width: 900px;
   margin-left: auto;
@@ -8,7 +8,7 @@
 
 @media (min-width: 1024px) {
   .fullWidthSection {
-    margin: 2rem auto;
+    margin: 8rem auto;
   }
 }
 

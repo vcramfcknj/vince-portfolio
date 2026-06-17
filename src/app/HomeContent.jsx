@@ -7,23 +7,26 @@ import EnhancedHero from '@/components/EnhancedHero'
 import About from '@/components/About'
 import Experience from '@/components/Experience'
 import Projects from '@/components/Projects'
-import Certificates from '@/components/Certificates'
 import Skills from '@/components/Skills'
-import Contact from '@/components/Contact'
-
-// This variable persists during client-side navigation but resets on hard refresh
-let hasShownPreloader = false;
 
 export default function HomeContent() {
-  const [showPreloader, setShowPreloader] = useState(!hasShownPreloader)
+  const [showPreloader, setShowPreloader] = useState(false)
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
 
   useEffect(() => {
-    // Ensure it doesn't show again even if they navigate away early
-    hasShownPreloader = true;
+    // Only show preloader if it hasn't been shown in this session
+    const hasShown = sessionStorage.getItem('hasShownPreloader')
+    if (!hasShown) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShowPreloader(true)
+      sessionStorage.setItem('hasShownPreloader', 'true')
+    } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsFirstLoad(false)
+    }
   }, [])
 
   const handlePreloaderComplete = () => {
-    hasShownPreloader = true;
     setShowPreloader(false)
   }
 
@@ -34,13 +37,11 @@ export default function HomeContent() {
       </AnimatePresence>
 
       <main>
-        <EnhancedHero />
+        <EnhancedHero isFirstLoad={isFirstLoad} />
         <About />
         <Experience />
         <Projects />
-        <Certificates />
         <Skills />
-        <Contact />
       </main>
     </>
   )

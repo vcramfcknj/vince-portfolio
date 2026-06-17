@@ -1,10 +1,11 @@
 import './globals.css'
 import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import Contact from '@/components/Contact'
 import ScrollToTop from '@/components/ui/ScrollToTop'
 import SmoothScroll from '@/components/SmoothScroll'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { ScrollProvider } from '@/context/ScrollContext'
+import GlobalTransition from '@/components/ui/GlobalTransition'
 import { Bebas_Neue, Inter, Playfair_Display } from 'next/font/google'
 
 const bebas = Bebas_Neue({
@@ -53,10 +54,12 @@ export default function RootLayout({ children }) {
         <SmoothScroll>
           <ThemeProvider>
             <ScrollProvider>
-              <Navbar />
-              {children}
-              <ScrollToTop />
-              <Footer />
+              <GlobalTransition>
+                <Navbar />
+                {children}
+                <ScrollToTop />
+                <Contact />
+              </GlobalTransition>
             </ScrollProvider>
           </ThemeProvider>
         </SmoothScroll>

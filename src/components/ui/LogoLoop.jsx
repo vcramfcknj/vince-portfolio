@@ -338,6 +338,7 @@ export const LogoLoop = memo(
           <li
             key={key}
             role="listitem"
+            className="group/item"
             style={{
               flex: 'none',
               fontSize: 'var(--logoloop-logoHeight)',

@@ -1,9 +1,21 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import styles from './Footer.module.css'
 
-export default function Footer() {
+export default function Footer({ forceShow = false, transparent = false }) {
+  const pathname = usePathname();
+
+  if (pathname === '/' && !forceShow) {
+    return null;
+  }
+
   return (
-    <footer className={styles.footer}>
+    <footer 
+      className={styles.footer} 
+      style={transparent ? { background: 'transparent', borderTop: '1px solid rgba(255,255,255,0.1)' } : {}}
+    >
       <div className={styles.footerLeft}>
         <span className={styles.footerName}>Vince Marc Justine O. Rubang</span>
         <span className={styles.footerMeta}>BS Information Technology · Ilocos Sur Polytechnic State College</span>

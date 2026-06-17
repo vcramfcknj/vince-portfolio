@@ -4,9 +4,10 @@ import useScrollReveal from '@/hooks/useScrollReveal'
 import styles from './Skills.module.css'
 import LogoLoop from './ui/LogoLoop'
 import { SiFigma } from 'react-icons/si'
+import BlobCursor from './ui/BlobCursor'
 
 // ─── Inline SVG Icons ─────────────────────────────────────────────────────────
-const icons = {
+export const icons = {
   Java: (
     <svg viewBox="0 0 128 128">
       <path d="M80.1 76.5c-3.7-1.1-6.1-2.5-6.1-5.1 0-2.8 3.5-4 10.3-4.4 12.3-.6 21-3.6 21-8.5 0-3.3-4.4-5.6-11.8-6.6l-.3-1c7.9 1 12.5 3.5 12.5 7.1 0 5-9 8.2-22.1 8.9-6.4.4-9.3 1.3-9.3 3.6 0 2 2.3 3.2 6.1 4.2l-.3.8z" fill="#E76F00"/>
@@ -26,7 +27,7 @@ const icons = {
   C: (
     <svg viewBox="0 0 128 128" fill="none">
       <path d="M115.4 31.2l-47.5-27.4c-2.4-1.4-5.4-1.4-7.8 0L12.6 31.2c-2.4 1.4-3.9 4-3.9 6.8v54.8c0 2.8 1.5 5.4 3.9 6.8l47.5 27.4c2.4 1.4 5.4 1.4 7.8 0l47.5-27.4c2.4-1.4 3.9-4 3.9-6.8V38c0-2.8-1.5-5.4-3.9-6.8z" fill="#A8B9CC"/>
-      <path d="M64 126.9c-1.3 0-2.6-.3-3.8-1l-47.5-27.4c-2.4-1.4-3.9-4-3.9-6.8V36.9c0-2.8 1.5-5.4 3.9-6.8l47.5-27.4c2.4-1.4 5.4-1.4 7.8 0l47.5 27.4c2.4 1.4 3.9 4 3.9 6.8v54.8c0 2.8-1.5 5.4-3.9 6.8l-47.5 27.4c-1.3.7-2.6 1-4 1zm0-116.8c-1 0-1.9.3-2.7.7L13.8 38.3c-1.6 1-2.6 2.7-2.6 4.5v54.8c0 1.8 1 3.5 2.6 4.5l47.5 27.4c1.6 1 3.7 1 5.3 0l47.5-27.4c1.6-1 2.6-2.7 2.6-4.5V42.8c0-1.8-1-3.5-2.6-4.5L66.7 10.9c-.8-.5-1.7-.8-2.7-.8z" fill="#3949AB"/>
+      <path d="M64 126.9c-1.3 0-2.6-.3-3.8-1l-47.5-27.4c-2.4-1.4-3.9-4-3.9-6.8V36.9c0-2.8 1.5-5.4 3.9-6.8l47.5-27.4c2.4-1.4 5.4-1.4 7.8 0l47.5 27.4c2.4-1.4 3.9 4 3.9 6.8v54.8c0 2.8-1.5 5.4-3.9 6.8l-47.5 27.4c-1.3.7-2.6 1-4 1zm0-116.8c-1 0-1.9.3-2.7.7L13.8 38.3c-1.6 1-2.6 2.7-2.6 4.5v54.8c0 1.8 1 3.5 2.6 4.5l47.5 27.4c1.6 1 3.7 1 5.3 0l47.5-27.4c1.6-1 2.6-2.7 2.6-4.5V42.8c0-1.8-1-3.5-2.6-4.5L66.7 10.9c-.8-.5-1.7-.8-2.7-.8z" fill="#3949AB"/>
       <path d="M82.2 78.4c-3.8 4.6-9.5 7.6-16.1 7.6-11.4 0-20.6-9.2-20.6-20.6s9.2-20.6 20.6-20.6c6.6 0 12.3 3 16.1 7.6l10-10C85.5 33.6 75.4 28 64.1 28 44.8 28 29.2 43.6 29.2 63s15.6 35 34.9 35c11.3 0 21.4-5.6 28.1-14.4l-10-10z" fill="#3949AB"/>
     </svg>
   ),
@@ -67,8 +68,8 @@ const icons = {
   ),
   'Next.js': (
     <svg viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="11" fill="#000"/>
-      <path d="M16.6 17.5L9.1 7.6H7v8.8h1.6v-6.3l6.5 8.6a10.8 10.8 0 0 0 1.5-1.2zM15.4 7.6h1.6v8.8h-1.6z" fill="#fff"/>
+      <circle cx="12" cy="12" r="11" fill="currentColor"/>
+      <path d="M16.6 17.5L9.1 7.6H7v8.8h1.6v-6.3l6.5 8.6a10.8 10.8 0 0 0 1.5-1.2zM15.4 7.6h1.6v8.8h-1.6z" fill="var(--bg)"/>
     </svg>
   ),
   'HTML/CSS': (
@@ -93,7 +94,7 @@ const icons = {
   ),
   'Framer Motion': (
     <svg viewBox="0 0 24 24" fill="none">
-      <path d="M12 12V4H4l8 8zm0 0h8l-8 8v-8zm0 0H4l8-8v8zm0 0l8-8v8l-8 8v-8z" fill="#000"/>
+      <path d="M12 12V4H4l8 8zm0 0h8l-8 8v-8zm0 0H4l8-8v8zm0 0l8-8v8l-8 8v-8z" fill="currentColor"/>
     </svg>
   ),
   'Node.js': (
@@ -105,7 +106,7 @@ const icons = {
   ),
   Flask: (
     <svg viewBox="0 0 24 24" fill="none">
-      <path d="M12 2c-1.1 0-2 .9-2 2v6l-5 9c-.5 1 .2 2.2 1.4 2.2h11.2c1.2 0 1.9-1.2 1.4-2.2l-5-9V4c0-1.1-.9-2-2-2z" fill="#000"/>
+      <path d="M12 2c-1.1 0-2 .9-2 2v6l-5 9c-.5 1 .2 2.2 1.4 2.2h11.2c1.2 0 1.9-1.2 1.4-2.2l-5-9V4c0-1.1-.9-2-2-2z" fill="currentColor"/>
     </svg>
   ),
   FastAPI: (
@@ -176,7 +177,7 @@ const icons = {
   Figma: <SiFigma size="100%" color="#F24E1E" />,
 }
 
-function DefaultIcon() {
+export function DefaultIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="16 18 22 12 16 6"/>
@@ -207,11 +208,25 @@ export default function Skills() {
           filter: 'grayscale(100%)', 
           opacity: 0.6, 
           transition: 'all 0.3s ease',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          position: 'relative',
+          zIndex: 110
         }}
         title={skill}
-        onMouseEnter={(e) => { e.currentTarget.style.filter = 'grayscale(0%)'; e.currentTarget.style.opacity = '1'; }}
-        onMouseLeave={(e) => { e.currentTarget.style.filter = 'grayscale(100%)'; e.currentTarget.style.opacity = '0.6'; }}
+        onMouseEnter={(e) => { 
+          e.currentTarget.style.filter = 'grayscale(0%)'; 
+          e.currentTarget.style.opacity = '1'; 
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('blob-snap', { detail: { target: e.currentTarget } }));
+          }
+        }}
+        onMouseLeave={(e) => { 
+          e.currentTarget.style.filter = 'grayscale(100%)'; 
+          e.currentTarget.style.opacity = '0.6'; 
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('blob-release'));
+          }
+        }}
       >
         {icons[skill] ?? <DefaultIcon />}
       </div>
@@ -219,8 +234,9 @@ export default function Skills() {
   }))
 
   return (
-    <section id="skills" className={styles.skills}>
-      <div className={styles.inner}>
+    <section id="skills" className={styles.skills} style={{ position: 'relative', zIndex: 1 }}>
+      <BlobCursor zIndex={0} />
+      <div className={styles.inner} style={{ position: 'relative', zIndex: 10 }}>
 
         <div
           ref={headerRef}
@@ -232,18 +248,20 @@ export default function Skills() {
 
       </div>
 
-      <div style={{ height: '80px', width: '100%', position: 'relative', marginTop: '1rem', paddingBottom: '3rem' }}>
-        <LogoLoop 
-          logos={logos}
-          speed={50}
-          direction="left"
-          logoHeight={65}
-          gap={32}
-          fadeOut={true}
-          fadeOutColor="var(--bg)"
-          scaleOnHover={true}
-          pauseOnHover={true}
-        />
+      <div style={{ position: 'relative', width: '100%', paddingBottom: '3rem', zIndex: 10 }}>
+        <div style={{ height: '80px', width: '100%', position: 'relative', marginTop: '1rem', zIndex: 10 }}>
+          <LogoLoop 
+            logos={logos}
+            speed={50}
+            direction="left"
+            logoHeight={65}
+            gap={32}
+            fadeOut={true}
+            fadeOutColor="var(--bg)"
+            scaleOnHover={true}
+            pauseOnHover={true}
+          />
+        </div>
       </div>
 
     </section>

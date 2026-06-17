@@ -1,13 +1,32 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 import styles from '../ProjectDetail.module.css'
+import MagneticButton from '@/components/ui/MagneticButton'
 
 export default function CheckProjectPage() {
   return (
-    <main className={styles.wrapper}>
-      <Link href="/projects" label="Projects" className={styles.backLink}>
-        &larr; Back to Projects
-      </Link>
+    <motion.main 
+      className={styles.wrapper}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <div style={{ marginBottom: '3rem' }}>
+        <MagneticButton 
+          text="Back to Projects" 
+          href="/projects" 
+          icon="←"
+          color="var(--text)"
+          bgColor="transparent"
+          fillColor="var(--text)"
+          textColorHover="var(--bg)"
+          borderColor="var(--border-mid)"
+          style={{ padding: '0.5rem 1.5rem', fontSize: '0.85rem' }}
+        />
+      </div>
 
       {/* HERO SECTION */}
       <section className={styles.heroGridContainer}>
@@ -134,6 +153,6 @@ export default function CheckProjectPage() {
         </div>
 
       </section>
-    </main>
+    </motion.main>
   )
 }

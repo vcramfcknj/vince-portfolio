@@ -1,3 +1,4 @@
+"use client"
 /* eslint-disable react-hooks/refs */
 import React, { Children, cloneElement, forwardRef, isValidElement, useEffect, useMemo, useRef } from 'react';
 import gsap from 'gsap';
@@ -102,7 +103,7 @@ const CardSwap = ({
       tlRef.current = tl;
 
       tl.to(elFront, {
-        y: '+=500',
+        x: '+=600',
         duration: config.durDrop,
         ease: config.ease
       });

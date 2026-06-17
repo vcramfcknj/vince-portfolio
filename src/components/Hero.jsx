@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { Typewriter } from './ui/TypewriterText'
+import MagneticButton from './ui/MagneticButton'
 
 export default function Hero() {
   const marqueeRef = useRef(null)
@@ -263,38 +264,15 @@ export default function Hero() {
         right: '1.5rem',
         zIndex: 3,
       }}>
-        <a
-          href="#"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.6rem',
-            padding: '0.75rem 1.6rem',
-            background: 'transparent',
-            color: '#e8e4dc',
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            textDecoration: 'none',
-            borderRadius: '999px',
-            border: '1px solid rgba(232,228,220,0.5)',
-            fontFamily: 'var(--font-sans)',
-            transition: 'background 0.3s ease, letter-spacing 0.3s ease, border-color 0.3s ease',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.background = 'rgba(232,228,220,0.1)'
-            e.currentTarget.style.borderColor = 'rgba(232,228,220,0.8)'
-            e.currentTarget.style.letterSpacing = '0.26em'
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = 'transparent'
-            e.currentTarget.style.borderColor = 'rgba(232,228,220,0.5)'
-            e.currentTarget.style.letterSpacing = '0.2em'
-          }}
-        >
-          Résumé ↗
-        </a>
+        <MagneticButton 
+          href="#" 
+          text="Résumé" 
+          icon="↗"
+          color="#e8e4dc"
+          fillColor="#e8e4dc"
+          textColorHover="#0c0c0c"
+          borderColor="rgba(232,228,220,0.5)"
+        />
       </div>
 
       <style>{`

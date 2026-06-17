@@ -5,14 +5,21 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useTheme } from '@/context/ThemeContext'
 import StaggeredMenu from '@/components/ui/StaggeredMenu'
+import MagneticEffect from '@/components/ui/MagneticEffect'
 import styles from './Navbar.module.css'
 
 const navLinks = [
-  { num: '01', label: 'Home',       href: '/#home'       },
-  { num: '02', label: 'About',      href: '/about'       },
-  { num: '03', label: 'Experience', href: '/#experience' },
-  { num: '04', label: 'Projects',   href: '/projects'    },
-  { num: '05', label: 'Contact',    href: '/#contact'    },
+  { num: '01', label: 'About',      href: '/about'       },
+  { num: '02', label: 'Projects',   href: '/projects'    },
+  { num: '03', label: 'Contact',    href: '/contact'     },
+]
+
+const menuLinks = [
+  { label: 'Home',       href: '/#home'       },
+  { label: 'About',      href: '/about'       },
+  { label: 'Experience', href: '/#experience' },
+  { label: 'Projects',   href: '/projects'    },
+  { label: 'Contact',    href: '/contact'     },
 ]
 
 function SunIcon() {
@@ -61,17 +68,9 @@ export default function Navbar() {
 
   /* ── Scrolled state ─────────────────────────────────────────────────────── */
   useEffect(() => {
-    if (isSubPage) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setScrolled(true)
-      return
-    }
 
     const onScroll = () => {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = setTimeout(() => {
-        setScrolled(window.scrollY > 60)
-      }, 60)
+      setScrolled(window.scrollY > 10)
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -93,9 +92,9 @@ export default function Navbar() {
     <>
       {/* ── Top bar ───────────────────────────────────────────────────────── */}
       {!isMobile && (
-        <div className={`${styles.navWrapper} ${(!isSubPage && scrolled) ? styles.navWrapperHidden : ''}`}>
+        <div className={styles.navWrapper}>
           <nav
-            className={`${styles.nav} ${(scrolled || isSubPage) ? styles.navScrolled : ''}`}
+            className={styles.nav}
             aria-label="Main navigation"
           >
             <div className={styles.logoWrapper}>
@@ -115,41 +114,35 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Desktop links */}
-            <ul className={styles.navList} role="list">
-              {navLinks.map((link) => {
-                const linkPath = link.href.split('#')[0]
-                const isActive = linkPath !== '/' && (pathname === linkPath || pathname.startsWith(linkPath + '/'))
-                return (
-                  <li key={link.num}>
-                    <Link href={link.href} className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
-                      <span className={styles.navLabel}>{link.label}</span>
-                      <span className={styles.navDot} aria-hidden="true" />
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-
-            {/* Theme toggle — shown in pill nav */}
-            <button
-              onClick={toggleTheme}
-              className={styles.themeBtn}
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            >
-              {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
-            </button>
+            <div className={styles.rightSection}>
+              {/* Desktop links */}
+              <ul className={styles.navList} role="list">
+                {navLinks.map((link) => {
+                  const linkPath = link.href.split('#')[0]
+                  const isActive = linkPath !== '/' && (pathname === linkPath || pathname.startsWith(linkPath + '/'))
+                  return (
+                    <li key={link.num}>
+                      <MagneticEffect strength={0.3}>
+                        <Link href={link.href} className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}>
+                          <span className={styles.navLabel}>{link.label}</span>
+                        </Link>
+                      </MagneticEffect>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
           </nav>
         </div>
       )}
 
-      {/* ── Staggered Menu (Mobile only on sub-pages, always on homepage) ── */}
-      <div className={`${styles.staggeredMenuContainer} ${(!isMobile && !scrolled && !isSubPage) ? styles.staggeredMenuHidden : (!isMobile && isSubPage) ? styles.staggeredMenuHidden : ''}`}>
+      {/* ── Staggered Menu ── */}
+      <div className={`${styles.staggeredMenuContainer} ${(!isMobile && !scrolled) ? styles.staggeredMenuHidden : ''}`}>
         <StaggeredMenu
           theme={theme}
           toggleTheme={toggleTheme}
           scrolled={scrolled}
-          items={navLinks.map((link) => ({ label: link.label, link: link.href }))}
+          items={menuLinks.map((item) => ({ label: item.label, link: item.href }))}
           socialItems={[
             { label: 'LinkedIn', link: 'https://linkedin.com' },
             { label: 'GitHub', link: 'https://github.com' }

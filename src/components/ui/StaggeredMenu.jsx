@@ -2,6 +2,7 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import MagneticButton from './MagneticButton';
 import styles from '../Navbar.module.css'; // For the logo styles
 
 function SunIcon() {
@@ -60,15 +61,9 @@ export const StaggeredMenu = ({
   const plusVRef = useRef(null);
   const iconRef = useRef(null);
 
-  const textInnerRef = useRef(null);
-  const textWrapRef = useRef(null);
-  const [textLines, setTextLines] = useState(['Menu', 'Close']);
-
   const openTlRef = useRef(null);
   const closeTweenRef = useRef(null);
   const spinTweenRef = useRef(null);
-  const textCycleAnimRef = useRef(null);
-  const colorTweenRef = useRef(null);
 
   const toggleBtnRef = useRef(null);
   const busyRef = useRef(false);
@@ -83,7 +78,6 @@ export const StaggeredMenu = ({
       const plusH = plusHRef.current;
       const plusV = plusVRef.current;
       const icon = iconRef.current;
-      const textInner = textInnerRef.current;
 
       if (!panel || !plusH || !plusV || !icon) return;
 
@@ -99,14 +93,12 @@ export const StaggeredMenu = ({
         gsap.set(preContainer, { xPercent: 0, opacity: 1 });
       }
 
-      gsap.set(plusH, { transformOrigin: '50% 50%', rotate: 0, y: 0 });
-      gsap.set(plusV, { transformOrigin: '50% 50%', rotate: 0, y: 0 });
-      gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
-
-      if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor });
+      gsap.set(plusHRef.current, { transformOrigin: '50% 50%', rotate: 0, y: 0 });
+      gsap.set(plusVRef.current, { transformOrigin: '50% 50%', rotate: 0, y: 0 });
+      gsap.set(iconRef.current, { rotate: 0, transformOrigin: '50% 50%' });
     });
     return () => ctx.revert();
-  }, [menuButtonColor, position]);
+  }, [position]);
 
   const buildOpenTimeline = useCallback(() => {
     const panel = panelRef.current;
@@ -267,64 +259,6 @@ export const StaggeredMenu = ({
     }
   }, []);
 
-  const animateColor = useCallback(
-    opening => {
-      const btn = toggleBtnRef.current;
-      if (!btn) return;
-      colorTweenRef.current?.kill();
-      if (changeMenuColorOnOpen) {
-        const targetColor = opening ? openMenuButtonColor : menuButtonColor;
-        colorTweenRef.current = gsap.to(btn, { color: targetColor, delay: 0.18, duration: 0.3, ease: 'power2.out' });
-      } else {
-        gsap.set(btn, { color: menuButtonColor });
-      }
-    },
-    [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen]
-  );
-
-  React.useEffect(() => {
-    if (toggleBtnRef.current) {
-      if (changeMenuColorOnOpen) {
-        const targetColor = openRef.current ? openMenuButtonColor : menuButtonColor;
-        gsap.set(toggleBtnRef.current, { color: targetColor });
-      } else {
-        gsap.set(toggleBtnRef.current, { color: menuButtonColor });
-      }
-    }
-  }, [changeMenuColorOnOpen, menuButtonColor, openMenuButtonColor, theme]);
-
-  const animateText = useCallback(opening => {
-    const inner = textInnerRef.current;
-    if (!inner) return;
-
-    textCycleAnimRef.current?.kill();
-
-    const currentLabel = opening ? 'Menu' : 'Close';
-    const targetLabel = opening ? 'Close' : 'Menu';
-    const cycles = 3;
-
-    const seq = [currentLabel];
-    let last = currentLabel;
-    for (let i = 0; i < cycles; i++) {
-      last = last === 'Menu' ? 'Close' : 'Menu';
-      seq.push(last);
-    }
-    if (last !== targetLabel) seq.push(targetLabel);
-    seq.push(targetLabel);
-
-    setTextLines(seq);
-    gsap.set(inner, { yPercent: 0 });
-
-    const lineCount = seq.length;
-    const finalShift = ((lineCount - 1) / lineCount) * 100;
-
-    textCycleAnimRef.current = gsap.to(inner, {
-      yPercent: -finalShift,
-      duration: 0.5 + lineCount * 0.07,
-      ease: 'power4.out'
-    });
-  }, []);
-
   const toggleMenu = useCallback(() => {
     const target = !openRef.current;
     openRef.current = target;
@@ -339,9 +273,7 @@ export const StaggeredMenu = ({
     }
 
     animateIcon(target);
-    animateColor(target);
-    animateText(target);
-  }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
+  }, [playOpen, playClose, animateIcon, onMenuOpen, onMenuClose]);
 
   const closeMenu = useCallback(() => {
     if (openRef.current) {
@@ -350,10 +282,8 @@ export const StaggeredMenu = ({
       onMenuClose?.();
       playClose();
       animateIcon(false);
-      animateColor(false);
-      animateText(false);
     }
-  }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
+  }, [playClose, animateIcon, onMenuClose]);
 
   React.useEffect(() => {
     if (!closeOnClickAway || !open) return;
@@ -374,6 +304,10 @@ export const StaggeredMenu = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [closeOnClickAway, open, closeMenu]);
+
+  React.useEffect(() => {
+    closeMenu();
+  }, [pathname, closeMenu]);
 
   return (
     <div
@@ -429,25 +363,49 @@ export const StaggeredMenu = ({
             </Link>
           </div>
 
-          <div className="sm-controls">
+          <div className="sm-controls" ref={toggleBtnRef}>
             <button
               type="button"
               onClick={toggleTheme}
-              className={styles.themeBtn}
-              style={{ pointerEvents: 'auto', position: 'relative', zIndex: 50 }}
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                border: '1px solid var(--border-mid)',
+                background: 'var(--bg-surface)',
+                color: 'var(--text)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                pointerEvents: !open ? 'none' : 'auto',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease',
+                transform: !open ? 'scale(0)' : 'scale(1)',
+                opacity: !open ? 0 : 1
+              }}
+              onMouseEnter={(e) => {
+                if (open) e.currentTarget.style.transform = 'scale(1.1)';
+              }}
+              onMouseLeave={(e) => {
+                if (open) e.currentTarget.style.transform = 'scale(1)';
+              }}
               aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             >
               {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
             </button>
 
-            <button
-              ref={toggleBtnRef}
+            <MagneticButton
               className="sm-toggle"
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               aria-controls="staggered-menu-panel"
               onClick={toggleMenu}
-              type="button"
+              color="var(--bg)"
+              fillColor="var(--bg)"
+              textColorHover="var(--text)"
+              borderColor="transparent"
+              bgColor="var(--text)"
             >
               <span
                 ref={iconRef}
@@ -465,7 +423,7 @@ export const StaggeredMenu = ({
                   style={{ top: '13px' }}
                 />
               </span>
-            </button>
+            </MagneticButton>
           </div>
         </header>
 
@@ -539,28 +497,19 @@ export const StaggeredMenu = ({
 .sm-scope .sm-controls { display: flex; align-items: center; gap: 1.5rem; pointer-events: auto; }
 /* ── Toggle button (circle) ── */
 .sm-scope .sm-toggle {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: var(--sm-btn-bg, #1c1c1e);
-  border: 1px solid rgba(255,255,255,0.08);
-  cursor: pointer;
-  pointer-events: auto;
-  overflow: visible;
+  width: 72px !important;
+  height: 72px !important;
+  margin-top: 12px;
+  margin-right: 20px;
+  padding: 0 !important;
+  border-radius: 50% !important;
   box-shadow: 0 4px 20px rgba(0,0,0,0.35);
-  transition: transform 0.25s cubic-bezier(0.25,1,0.5,1), box-shadow 0.25s ease;
-}
-.sm-scope .sm-toggle:hover {
-  transform: scale(1.06);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+  transition: box-shadow 0.25s ease;
+  z-index: 50;
 }
 .sm-scope .sm-toggle:focus-visible { outline: 2px solid var(--border); outline-offset: 4px; border-radius: 50%; }
-.sm-scope .sm-icon { position: relative; width: 22px; height: 16px; flex: 0 0 22px; display: inline-flex; align-items: center; justify-content: center; will-change: transform; }
-.sm-scope .sm-icon-line { position: absolute; left: 0; width: 100%; height: 1.5px; background: #c8c8cc; border-radius: 2px; will-change: transform; }
+.sm-scope .sm-icon { position: relative; width: 22px; height: 16px; flex: 0 0 22px; display: inline-flex; align-items: center; justify-content: center; will-change: transform; z-index: 1; }
+.sm-scope .sm-icon-line { position: absolute; left: 0; width: 100%; height: 1.5px; background-color: currentColor; border-radius: 2px; will-change: transform; }
 .sm-scope .staggered-menu-panel { position: absolute; top: 0; right: 0; width: clamp(260px, 60vw, 420px); height: 100%; background: var(--nav-overlay-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; padding: 7em 2em 2em 2em; overflow-y: auto; z-index: 10; border-left: 1px solid var(--border); pointer-events: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
 .sm-scope [data-position='left'] .staggered-menu-panel { right: auto; left: 0; border-left: none; border-right: 1px solid var(--border); box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
 .sm-scope .sm-prelayers { position: absolute; top: 0; right: 0; bottom: 0; width: clamp(260px, 60vw, 420px); pointer-events: none; z-index: 5; }
@@ -584,8 +533,9 @@ export const StaggeredMenu = ({
 .sm-scope .sm-panel-item:hover::after { color: var(--accent); }
 @media (max-width: 1024px) { .sm-scope .staggered-menu-panel { width: 100%; left: 0; right: 0; padding: 8em 2em 2em 2em; } .sm-scope .sm-prelayers { width: 100%; } }
 @media (min-width: 821px) {
+  .sm-scope .staggered-menu-header,
   .sm-scope .staggered-menu-header.scrolled { background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-bottom: none !important; justify-content: flex-end; }
-  .sm-scope .sm-logo, .sm-scope .sm-controls > button:first-child { display: none !important; }
+  .sm-scope .sm-logo { display: none !important; }
 }
       `}</style>
     </div>

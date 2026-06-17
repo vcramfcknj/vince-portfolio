@@ -1,77 +1,110 @@
 .about {
   background: var(--bg);
-  padding: 2rem 0;
-  border-top: 1px solid var(--border);
+  padding: 5rem 0 2rem;
   transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .inner {
-  max-width: 850px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-/* ── Bio text + word-by-word reveal ── */
-.bioText {
+/* ── Top Row (Two columns) ── */
+.topRow {
+  display: flex;
+  gap: 6rem;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.mainCol {
+  flex: 1;
+  max-width: 750px;
+}
+
+.subCol {
+  flex: 0 0 320px;
+  padding-top: 0.5rem;
+}
+
+.mainText {
   font-family: var(--font-sans);
-  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
   font-weight: 400;
-  line-height: 1.7;
-  color: var(--text-dim);
-  text-align: justify;
-  hyphens: auto;
+  line-height: 1.4;
+  color: var(--text);
+  letter-spacing: -0.01em;
 }
 
-.wordWrap { display: inline; }
+.subText {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.wordWrap {
+  display: inline-flex;
+  overflow: hidden;
+  vertical-align: top;
+}
 
 .word {
   display: inline-block;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.45s var(--ease-out-expo),
-              transform 0.45s var(--ease-out-expo);
 }
 
-.bioVisible .word {
-  opacity: 1;
-  transform: translateY(0);
+/* ── Bottom Row (Button) ── */
+.bottomRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--border-mid);
+  position: relative;
+  /* Offset the overlap so it doesn't collide with the next section */
+  margin-bottom: 30px; 
 }
 
 .actionWrap {
-  margin-top: 3rem;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
+  /* Ensure the button overlaps the border precisely in the middle */
+  transform: translateY(50%);
+  z-index: 10;
 }
 
-.actionVisible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.readMoreBtn {
-  display: inline-block;
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text);
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border: 1px solid var(--border-mid);
-  border-radius: 99px;
-  background: var(--bg);
-  transition: all 0.25s ease;
-}
-
-.readMoreBtn:hover {
-  background: var(--text);
-  color: var(--bg);
-  border-color: var(--text);
+.circleBtn {
+  width: 130px !important;
+  height: 130px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  border: none !important;
+  font-size: 1rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-weight: 400 !important;
 }
 
 /* ── Responsive ── */
+@media (max-width: 900px) {
+  .topRow {
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .subCol {
+    flex: auto;
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 600px) {
-  .about { padding: 1.5rem 0; }
-  .inner { padding: 0 1.5rem; }
-  .bioText { text-align: left; font-size: 0.85rem; }
+  .about { padding: 3rem 0 1.5rem; }
+  .inner { padding: 0 1.5rem; gap: 2rem; }
+  .mainText { font-size: 1.25rem; }
+  .circleBtn {
+    width: 100px !important;
+    height: 100px !important;
+  }
 }

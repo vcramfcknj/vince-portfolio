@@ -1,7 +1,14 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
+import { usePathname } from 'next/navigation'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import styles from './Contact.module.css'
+import dynamic from 'next/dynamic'
+import Footer from './Footer'
+import MagneticButton from './ui/MagneticButton'
+
+const Ferrofluid = dynamic(() => import('./ui/Ferrofluid'), { ssr: false })
 
 const EMAIL = 'vincerubang28@gmail.com'
 const PHONE = '09603468348'
@@ -67,64 +74,86 @@ const socials = [
 ]
 
 export default function Contact() {
-  const innerRef = useRef(null)
+  const container = useRef(null);
+  const pathname = usePathname();
+  
+  const { scrollYProgress } = useScroll({
+    target: container,
+    offset: ["start end", "end end"]
+  });
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add(styles.visible)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.15 }
-    )
-    if (innerRef.current) observer.observe(innerRef.current)
-    return () => observer.disconnect()
-  }, [])
+  const y = useTransform(scrollYProgress, [0, 1], ["-50%", "0%"]);
 
   return (
-    <section id="contact" className={styles.contact}>
-      <div ref={innerRef} className={styles.inner}>
+    <div ref={container} className={styles.perspectiveWrapper}>
+      <motion.section 
+        id="contact" 
+        className={styles.contact}
+        style={{ y }}
+      >
+        <div className={styles.ferroFluidBackground}>
+          <Ferrofluid key={pathname} color="#1a1a1a" />
+        </div>
+        <div className={styles.inner}>
 
-        {/* Heading */}
-        <div className={styles.top}>
-          <p className="section-subtitle">Get in touch</p>
-          <h2 className={styles.heading}>Let&rsquo;s Build<br />Something</h2>
+          {/* Heading */}
+          <div className={styles.top}>
+            <p className="section-subtitle">Get in touch</p>
+            <h2 className={styles.heading}>Let&rsquo;s Build<br />Something</h2>
+          </div>
+
+          {/* Description + email CTA */}
+          <div className={styles.mid}>
+            <p className={styles.desc}>
+              I&rsquo;m open to internships, collaborations, and interesting projects.
+              Drop me a message — I respond within 24 hours.
+            </p>
+            <MagneticButton
+              href="/contact"
+              text="Get In Touch"
+              icon={
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              }
+              effect="liquid"
+              color="var(--bg)"
+              bgColor="var(--text)"
+              fillColor="var(--bg)"
+              textColorHover="var(--text)"
+            />
+          </div>
+
+          {/* Social links */}
+          <div className={styles.socials}>
+            {socials.map((s) => (
+              <MagneticButton
+                key={s.label}
+                href={s.href}
+                className={styles.socialLink}
+                aria-label={s.label}
+                effect="liquid"
+                color="var(--text-dim)"
+                borderColor="var(--border)"
+                bgColor="transparent"
+                fillColor="var(--text)"
+                textColorHover="var(--bg)"
+                target={s.label !== 'Email' && s.label !== 'Phone' ? '_blank' : undefined}
+                rel="noopener noreferrer"
+              >
+                {s.icon}
+                <span className={styles.socialLinkLabel}>{s.label}</span>
+              </MagneticButton>
+            ))}
+          </div>
+
         </div>
 
-        {/* Description + email CTA */}
-        <div className={styles.mid}>
-          <p className={styles.desc}>
-            I&rsquo;m open to internships, collaborations, and interesting projects.
-            Drop me a message — I respond within 24 hours.
-          </p>
-          <a href={`mailto:${EMAIL}`} className={styles.emailBtn} id="contact-email-btn">
-            {EMAIL}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
+        {/* Render Footer directly inside the Contact section at the bottom */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', zIndex: 10 }}>
+          <Footer forceShow={true} transparent={true} />
         </div>
-
-        {/* Social links */}
-        <div className={styles.socials}>
-          {socials.map((s) => (
-            <a
-              key={s.label}
-              href={s.href}
-              target={s.label !== 'Email' && s.label !== 'Phone' ? '_blank' : undefined}
-              rel="noopener noreferrer"
-              className={styles.socialLink}
-              aria-label={s.label}
-            >
-              {s.icon}
-              <span>{s.label}</span>
-            </a>
-          ))}
-        </div>
-
-      </div>
-    </section>
+      </motion.section>
+    </div>
   )
 }

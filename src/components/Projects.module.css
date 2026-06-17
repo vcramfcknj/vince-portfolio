@@ -1,19 +1,20 @@
 .projects {
   background: var(--bg);
-  padding: 2rem 0;
+  padding: 5rem 0;
   border-top: 1px solid var(--border);
-  transition: background 0.35s ease, border-color 0.35s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .inner {
-  max-width: 850px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 0 2rem;
 }
 
 /* ── Header ── */
 .header {
-  margin-bottom: 3.5rem;
+  margin-bottom: 5rem;
   opacity: 0;
   transform: translateY(60px);
   transition: opacity 0.4s var(--ease-out-expo),
@@ -21,340 +22,207 @@
 }
 .header.visible { opacity: 1; transform: translateY(0); }
 
-/* ── Project list ── */
-.list { display: flex; flex-direction: column; }
-
-.divider { width: 100%; height: 1px; background: var(--border); }
-
-/* ── Project row (accordion trigger) ── */
-.projectWrap {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.4s var(--ease-out-expo),
-              transform 0.4s var(--ease-out-expo);
-}
-.projectWrap.visible { opacity: 1; transform: translateY(0); }
-
-.projectRow {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.8rem 0;
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  gap: 1rem;
-  transition: padding 0.35s var(--ease-out-expo);
-}
-.projectRow:hover { padding-left: 0.75rem; }
-.projectRowOpen { padding-left: 0.75rem; }
-
-.projectTitle {
-  font-family: var(--font-bebas);
-  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--text);
-  line-height: 1;
-  transition: color 0.3s, letter-spacing 0.65s var(--ease-out-expo);
-}
-.projectRow:hover .projectTitle {
-  letter-spacing: 0.05em;
-  color: var(--text);
-}
-
-.projectRight {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-shrink: 0;
-}
-
-.projectCategory {
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-
-.indicator {
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--border-mid);
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-sans);
-  font-size: 1.1rem;
-  font-weight: 300;
-  color: var(--text-dim);
-  flex-shrink: 0;
-  transition:
-    transform  0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    color      0.25s ease,
-    background 0.25s ease,
-    border-color 0.25s ease;
-}
-.projectRow:hover .indicator {
-  border-color: var(--border-mid);
-  background: var(--bg-surface);
-  color: var(--text);
-}
-.indicatorOpen {
-  transform: rotate(45deg);
-  color: var(--text);
-  background: var(--bg-surface);
-  border-color: var(--border-mid);
-}
-
-/* ── Accordion panel — grid approach for smooth height ── */
-.panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-}
-.panelOpen {
-  grid-template-rows: 1fr;
-}
-
-.panelInner {
-  overflow: hidden;
-  padding: 0;
-  opacity: 0;
-  transform: translateY(12px);
+/* ── Project List ── */
+.list {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  transition:
-    opacity   0.7s  ease 0.2s,
-    transform 0.85s cubic-bezier(0.25, 1, 0.5, 1) 0.15s,
-    padding   1.1s  cubic-bezier(0.25, 1, 0.5, 1);
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.panelOpen .panelInner {
-  padding: 0 0 3rem;
+.listVisible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ── Case study header ── */
-.csHeader {
+/* Dim non-hovered items */
+.list:hover .project {
+  opacity: 0.3;
+}
+.list .project:hover {
+  opacity: 1;
+}
+
+/* ── Project Row ── */
+.project {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+  align-items: center;
+  padding: 3rem 0;
+  border-top: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 2;
 }
 
-.csTitle {
-  font-family: var(--font-playfair);
-  font-size: clamp(1.3rem, 2.2vw, 1.75rem);
-  font-weight: 500;
-  font-style: italic;
-  color: var(--text);
-  margin-bottom: 0.35rem;
-}
-
-.csTagline {
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  color: var(--text-dim);
-}
-
-.csActions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  flex-shrink: 0;
-}
-
-.btnPrimary {
-  display: inline-block;
-  padding: 0.65rem 1.4rem;
-  background: var(--text);
-  color: var(--bg);
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: opacity 0.2s, letter-spacing 0.2s;
-}
-.btnPrimary:hover { opacity: 0.85; letter-spacing: 0.16em; }
-
-.btnGhost {
-  display: inline-block;
-  padding: 0.65rem 1.4rem;
-  border: 1px solid var(--border-mid);
-  color: var(--text-dim);
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: color 0.2s, border-color 0.2s, letter-spacing 0.2s;
-}
-.btnGhost:hover {
-  color: var(--text);
-  border-color: var(--border);
-  letter-spacing: 0.16em;
-}
-
-/* ── Metrics ── */
-.metrics {
-  display: flex;
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.metricCard {
-  flex: 1;
-  padding: 1.4rem 1.5rem;
-  background: var(--bg-surface);
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.metricValue {
+.projectTitle {
   font-family: var(--font-bebas);
-  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-size: clamp(3rem, 6vw, 6rem);
   font-weight: 400;
+  text-transform: uppercase;
+  margin: 0;
   color: var(--text);
   line-height: 1;
+  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-.metricLabel {
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-
-/* ── Main grid ── */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 3rem;
-  align-items: start;
-}
-
-/* Left column */
-.gridLeft { display: flex; flex-direction: column; gap: 2rem; }
-
-.block { display: flex; flex-direction: column; gap: 0.75rem; }
-
-.blockTitle {
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-dimmer);
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.blockText {
-  font-size: 0.9rem;
-  line-height: 1.75;
-  color: var(--text-dim);
-}
-
-.features { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-
-.featureCard {
-  padding: 1rem 1.1rem;
-  border: 1px solid var(--border);
-  border-radius: 2px;
+.projectDetails {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  transition: background 0.2s;
+  align-items: flex-end;
+  gap: 0.5rem;
+  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
 }
-.featureCard:hover { background: var(--bg-surface); }
 
-.featureTitle {
-  font-size: 0.78rem;
-  font-weight: 600;
+.projectRole {
+  font-size: 1.1rem;
+  font-weight: 500;
   color: var(--text);
 }
 
-.featureDesc {
-  font-size: 0.78rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-}
-
-/* Right column */
-.gridRight { display: flex; flex-direction: column; gap: 1.5rem; }
-
-.sideBox {
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 1.25rem 1.4rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-
-.detailRow {
-  display: flex;
-  justify-content: space-between;
+.projectCategory {
   font-size: 0.8rem;
   color: var(--text-dim);
-  gap: 1rem;
-}
-.detailRow strong { color: var(--text); font-weight: 600; }
-
-.stackRow {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.stackCat {
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-dimmer);
-}
-
-.stackTags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-
-.techTag {
-  font-size: 0.65rem;
-  font-weight: 600;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  padding: 0.25rem 0.6rem;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  transition: color 0.2s, border-color 0.2s;
 }
-.techTag:hover { color: var(--text); border-color: var(--border-mid); }
+
+/* Hover Animations */
+.project:hover .projectTitle {
+  transform: translateX(30px);
+}
+.project:hover .projectDetails {
+  transform: translateX(-30px);
+}
+
+/* ── Image Reveal Modal & Cursor ── */
+.modalWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.modalContainer {
+  height: 350px;
+  width: 400px;
+  position: fixed;
+  overflow: hidden;
+  border-radius: 4px;
+  pointer-events: none;
+  will-change: left, top, transform;
+}
+
+.modalSlider {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: top 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.modal {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalImage {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cursor {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #455CE9;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 101;
+  pointer-events: none;
+  will-change: left, top, transform;
+}
+
+.cursorLabel {
+  width: 80px;
+  height: 80px;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 102;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  pointer-events: none;
+  will-change: left, top, transform;
+}
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .grid { grid-template-columns: 1fr; gap: 2rem; }
-  .features { grid-template-columns: 1fr; }
+  .project {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 0;
+  }
+  .projectTitle {
+    font-size: clamp(1.8rem, 6vw, 3rem);
+  }
+  .projectDetails {
+    align-items: flex-end;
+    text-align: right;
+  }
+  .projectRole {
+    font-size: 0.9rem;
+  }
+  .projectCategory {
+    font-size: 0.65rem;
+  }
+  .project:hover .projectTitle {
+    transform: translateX(10px);
+  }
+  .project:hover .projectDetails {
+    transform: translateX(-10px);
+  }
+  .modalContainer, .cursor, .cursorLabel {
+    display: none;
+  }
 }
+
 @media (max-width: 600px) {
-  .projects { padding: 1.5rem 0; }
+  .projects { padding: 3rem 0; }
   .inner { padding: 0 1.5rem; }
-  .metrics { flex-direction: column; }
-  .csHeader { flex-direction: column; }
-  .projectRight { gap: 0.75rem; }
-  .projectCategory { display: none; }
+}
+
+/* ── CTA Button ── */
+.btnWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4rem;
+}
+
+.ovalBtn {
+  padding: 1.25rem 3.5rem !important;
+  border-radius: 999px !important;
+  font-size: 1rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-weight: 500 !important;
+  border: 1px solid var(--border-mid) !important;
+  min-width: 200px !important;
+  text-align: center !important;
 }
