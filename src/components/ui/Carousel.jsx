@@ -2,8 +2,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import Abstract3D from './Abstract3D';
+import dynamic from 'next/dynamic';
 import MagneticButton from './MagneticButton';
 import styles from './Carousel.module.css';
+
+const LottieAnimation = dynamic(() => import('./LottieAnimation'), { ssr: false });
 
 const DRAG_BUFFER = 0;
 const VELOCITY_THRESHOLD = 500;
@@ -75,9 +78,9 @@ function CarouselItem({ item, index, itemWidth, round, trackItemOffset, x, trans
         )}
       </div>
 
-      {(item.modelType || item.modelColor) && (
+      {item.lottieUrl && (
         <div className={styles.carouselImageContainer}>
-          <Abstract3D type={item.modelType} color={item.modelColor} />
+          <LottieAnimation url={item.lottieUrl} />
         </div>
       )}
     </motion.div>

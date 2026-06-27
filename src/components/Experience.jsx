@@ -16,7 +16,6 @@ const experiences = [
     achievements: [
       'Led the frontend implementation for the full website revamp using Next.js and React.',
       'Designed and integrated mobile-responsive UI/UX wireframes.',
-      'Conducted IoT hardware integration testing and backend system development.',
       'Completed 220 hours — exceeding the required 200-hour minimum.'
     ],
     tags: [
@@ -27,8 +26,7 @@ const experiences = [
       { name: 'UI/UX', icon: <FaPaintBrush /> },
       { name: 'IoT', icon: <FaMicrochip /> },
     ],
-    modelType: 'torus',
-    modelColor: '#8B5CF6',
+    lottieUrl: '/lottie-dev.json',
     link: '/projects/erovoutika',
     linkText: 'View Live Site',
     iconEl: (
@@ -53,10 +51,9 @@ const experiences = [
       { name: 'Web Dev', icon: <FaGlobe /> },
       { name: 'Mobile Dev', icon: <FaMobileAlt /> },
     ],
-    modelType: 'icosahedron',
-    modelColor: '#EAB308',
+    lottieUrl: '/lottie-award.json',
     link: '/about#awards',
-    linkText: 'See Certificate',
+    linkText: 'View Certificate',
     iconEl: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <path d="M6 9H4a2 2 0 0 1-2-2V5h4"/>
@@ -84,8 +81,7 @@ const experiences = [
       { name: 'JavaScript', icon: <SiJavascript /> },
       { name: 'MySQL', icon: <SiMysql /> },
     ],
-    modelType: 'sphere',
-    modelColor: '#3B82F6',
+    lottieUrl: '/lottie-web.json',
     link: '/projects',
     linkText: 'View Projects',
     iconEl: (
@@ -115,8 +111,7 @@ export default function Experience() {
     description: exp.description,
     achievements: exp.achievements,
     tags: exp.tags,
-    modelType: exp.modelType,
-    modelColor: exp.modelColor,
+    lottieUrl: exp.lottieUrl,
     link: exp.link,
     linkText: exp.linkText,
     icon: exp.iconEl

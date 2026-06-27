@@ -74,16 +74,8 @@ const socials = [
 ]
 
 export default function Contact() {
-  const container = useRef(null);
   const pathname = usePathname();
   
-  const { scrollYProgress } = useScroll({
-    target: container,
-    offset: ["start end", "end end"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ["-50%", "0%"]);
-
   if (pathname === '/contact') {
     return (
       <div style={{ position: 'relative', width: '100%', zIndex: 10, marginTop: 'auto' }}>
@@ -91,6 +83,19 @@ export default function Contact() {
       </div>
     )
   }
+
+  return <ContactContent pathname={pathname} />
+}
+
+function ContactContent({ pathname }) {
+  const container = useRef(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: container,
+    offset: ["start end", "end end"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["-50%", "0%"]);
 
   return (
     <div ref={container} className={styles.perspectiveWrapper}>

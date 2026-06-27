@@ -27,6 +27,11 @@
   color: var(--btn-hover-color);
 }
 
+.magneticButton:focus-visible {
+  outline: 2px solid var(--btn-border);
+  outline-offset: 4px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .magneticButton {
     transition: none;

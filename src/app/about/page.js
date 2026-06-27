@@ -6,7 +6,7 @@ import { Marquee } from '@/components/ui/Marquee'
 import MagneticButton from '@/components/ui/MagneticButton'
 import CircularText from '@/components/ui/CircularText'
 import GlareHover from '@/components/ui/GlareHover'
-import Lanyard from '@/components/ui/Lanyard'
+import DynamicLanyard from '@/components/ui/DynamicLanyard'
 import { FaEarthAmericas } from 'react-icons/fa6'
 import { icons, DefaultIcon } from '@/components/Skills'
 import styles from './AboutPage.module.css'
@@ -138,7 +138,7 @@ export default function AboutPage() {
       <div style={{ position: 'relative', width: '100%' }}>
         {/* LANYARD BACKGROUND */}
         <div className={styles.lanyardContainer}>
-           <Lanyard 
+           <DynamicLanyard 
              position={[0, 1.2, 16]} 
              gravity={[0, -40, 0]} 
              frontImage="/images/id.jpg"
