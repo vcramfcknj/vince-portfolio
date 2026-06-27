@@ -2,11 +2,26 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { CheckCircle2, AlertCircle } from 'lucide-react'
 import styles from './ContactPage.module.css'
 import MagneticButton from '@/components/ui/MagneticButton'
 import SplashCursor from '@/components/ui/SplashCursor'
 import { useTheme } from '@/context/ThemeContext'
+import { Filter } from 'bad-words'
+
+// Initialize the profanity filter and add our custom threat words
+const filter = new Filter();
+filter.addWords('kill', 'murder', 'die', 'suicide', 'stab', 'shoot', 'bomb', 'terrorist', 'massacre', 'kys', 'rape');
+
+const containsBadWords = (text) => {
+  if (!text) return false;
+  return filter.isProfane(text);
+};
+
+const isValidEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
 
 export default function ContactPage() {
   const { theme } = useTheme()
@@ -19,16 +34,87 @@ export default function ContactPage() {
     services: '',
     message: ''
   })
+  const [status, setStatus] = useState("idle");
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Trigger mailto client side action
-    if (!formData.name || !formData.email || !formData.message) return;
-    window.location.href = `mailto:vincerubang28@gmail.com?subject=Project Inquiry from ${formData.name}&body=${encodeURIComponent(formData.message)}`
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // 1. Missing Required Fields Check
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setStatus("error");
+      setStatusMessage("Please fill out all required fields.");
+      setTimeout(() => { setStatus("idle"); setStatusMessage(""); }, 5000);
+      return;
+    }
+
+    // 2. Email Format Check
+    if (!isValidEmail(formData.email)) {
+      setStatus("error");
+      setStatusMessage("Please enter a valid email address (e.g. name@example.com).");
+      setTimeout(() => { setStatus("idle"); setStatusMessage(""); }, 5000);
+      return;
+    }
+    
+    // 3. Local Moderation Check (Profanity + Threats)
+    const combinedText = `${formData.name} ${formData.organization} ${formData.services} ${formData.message}`;
+    if (containsBadWords(combinedText)) {
+      setStatus("error");
+      setStatusMessage("Inappropriate content detected. Message declined.");
+      setTimeout(() => { setStatus("idle"); setStatusMessage(""); }, 5000);
+      return;
+    }
+
+    setStatus("sending");
+    setStatusMessage("");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "7aed33f2-51e9-4eb2-9d4c-047b067f8fb3", // Replace with your key
+          name: formData.name,
+          email: formData.email,
+          organization: formData.organization,
+          services: formData.services,
+          message: formData.message,
+          subject: `New Portfolio Inquiry from ${formData.name}`,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setStatus("success");
+        setStatusMessage("Message sent successfully!");
+        setFormData({ name: '', email: '', organization: '', services: '', message: '' });
+        setTimeout(() => {
+          setStatus("idle");
+          setStatusMessage("");
+        }, 5000);
+      } else {
+        setStatus("error");
+        setStatusMessage("Something went wrong. Please try again.");
+        setTimeout(() => {
+          setStatus("idle");
+          setStatusMessage("");
+        }, 5000);
+      }
+    } catch (error) {
+      setStatus("error");
+      setStatusMessage("Something went wrong. Please try again.");
+      setTimeout(() => {
+        setStatus("idle");
+        setStatusMessage("");
+      }, 5000);
+    }
   }
 
   return (
@@ -128,10 +214,33 @@ export default function ContactPage() {
               ></textarea>
             </div>
 
+            {/* Status Message Indicator */}
+            <AnimatePresence>
+              {statusMessage && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    color: status === 'error' ? '#ef4444' : '#22c55e',
+                    marginTop: '1rem',
+                    fontSize: '1rem',
+                    fontWeight: 500
+                  }}
+                >
+                  {status === 'error' ? <AlertCircle size={20} /> : <CheckCircle2 size={20} />}
+                  {statusMessage}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <div className={styles.bottomRow}>
               <div className={styles.actionWrap}>
                 <MagneticButton 
-                  text="Send it" 
+                  text={status === "sending" ? "Sending..." : "Send it"} 
                   icon=""
                   effect="liquid"
                   color="var(--bg)"
@@ -141,6 +250,7 @@ export default function ContactPage() {
                   bgColor="var(--text)"
                   className={styles.circleBtn}
                   onClick={handleSubmit}
+                  disabled={status === "sending"}
                 />
               </div>
             </div>
