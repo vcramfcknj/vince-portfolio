@@ -8,7 +8,7 @@ import styles from './Carousel.module.css';
 
 const LottieAnimation = dynamic(() => import('./LottieAnimation'), { ssr: false });
 
-const DRAG_BUFFER = 0;
+const DRAG_BUFFER = 50;
 const VELOCITY_THRESHOLD = 500;
 const GAP = 16;
 const SPRING_OPTIONS = { type: 'spring', stiffness: 300, damping: 30 };
