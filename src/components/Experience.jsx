@@ -86,7 +86,7 @@ const experiences = [
     ],
     modelType: 'sphere',
     modelColor: '#3B82F6',
-    link: '/projects/spectaqr',
+    link: '/projects',
     linkText: 'View Projects',
     iconEl: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
