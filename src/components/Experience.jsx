@@ -99,6 +99,9 @@ const experiences = [
 
 import Carousel from '@/components/ui/Carousel'
 import { ContainerScroll } from '@/components/ui/ContainerScroll'
+import MagneticButton from '@/components/ui/MagneticButton'
+import dynamic from 'next/dynamic'
+const LottieAnimation = dynamic(() => import('@/components/ui/LottieAnimation'), { ssr: false })
 
 export default function Experience() {
   const [headerRef, headerVisible] = useScrollReveal({ threshold: 0.2 })
@@ -171,6 +174,29 @@ export default function Experience() {
                   </span>
                 ))}
               </div>
+              
+              {item.link && (
+                <div className={styles.mobileCardAction}>
+                  <MagneticButton
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    text={item.linkText || 'View Project'}
+                    icon=""
+                    effect="liquid"
+                    color="var(--bg)"
+                    bgColor="var(--text)"
+                    fillColor="var(--bg)"
+                    textColorHover="var(--text)"
+                  />
+                </div>
+              )}
+              
+              {item.lottieUrl && (
+                <div className={styles.mobileCardImageContainer}>
+                  <LottieAnimation url={item.lottieUrl} />
+                </div>
+              )}
             </div>
           ))}
         </div>

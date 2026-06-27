@@ -250,6 +250,7 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-top: auto;
+  margin-bottom: 1.5rem;
 }
 
 .mobileCardTag {
@@ -263,4 +264,20 @@
   border: 1px solid var(--border-mid);
   padding: 4px 10px;
   border-radius: 99px;
+}
+
+.mobileCardAction {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.mobileCardImageContainer {
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border-mid);
+  background: var(--bg);
 }
