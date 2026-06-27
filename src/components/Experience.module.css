@@ -146,7 +146,121 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 600px) {
+.mobileOnly {
+  display: none;
+  width: 100%;
+}
+.desktopOnly {
+  display: block;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
   .experience { padding: 1.5rem 0 3rem 0; }
   .inner { padding: 0 1.5rem; }
+  
+  .desktopOnly { display: none; }
+  .mobileOnly { display: block; }
+}
+
+/* Mobile Stack Cards */
+.mobileStack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+.mobileCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.mobileCardIcon {
+  display: flex;
+  height: 40px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--bg);
+  border: 1px solid var(--border-mid);
+  color: var(--text-dim);
+}
+
+.mobileCardDuration {
+  font-size: 0.8rem;
+  color: var(--text-dimmer);
+  font-weight: 500;
+}
+
+.mobileCardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+  line-height: 1.2;
+}
+
+.mobileCardCompany {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+}
+
+.mobileCardAchievements {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mobileCardAchievements li {
+  font-size: 0.9rem;
+  color: var(--text-dimmer);
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.mobileCardAchievements li::before {
+  content: "▹";
+  color: var(--text);
+  font-weight: bold;
+}
+
+.mobileCardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.mobileCardTag {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  background: var(--bg);
+  border: 1px solid var(--border-mid);
+  padding: 4px 10px;
+  border-radius: 99px;
 }

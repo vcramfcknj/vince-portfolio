@@ -128,16 +128,53 @@ export default function Experience() {
 
   return (
     <section id="experience" className={styles.experience}>
-      <ContainerScroll titleComponent={titleComponent}>
-        <div className={styles.carouselWrapper}>
-          <Carousel 
-            items={carouselItems} 
-            baseWidth={500} 
-            loop={false} 
-            autoplay={false} 
-          />
+      <div className={styles.desktopOnly}>
+        <ContainerScroll titleComponent={titleComponent}>
+          <div className={styles.carouselWrapper}>
+            <Carousel 
+              items={carouselItems} 
+              baseWidth={500} 
+              loop={false} 
+              autoplay={false} 
+            />
+          </div>
+        </ContainerScroll>
+      </div>
+      
+      <div className={styles.mobileOnly}>
+        <div style={{ padding: '0 1.5rem', marginBottom: '2rem' }}>
+          {titleComponent}
         </div>
-      </ContainerScroll>
+        <div className={styles.mobileStack} style={{ padding: '0 1.5rem' }}>
+          {carouselItems.map(item => (
+            <div key={item.id} className={styles.mobileCard}>
+              <div className={styles.mobileCardHeader}>
+                <div className={styles.mobileCardIcon}>{item.icon}</div>
+                <span className={styles.mobileCardDuration}>{item.duration}</span>
+              </div>
+              
+              <h3 className={styles.mobileCardTitle}>{item.title}</h3>
+              <p className={styles.mobileCardCompany}>{item.company}</p>
+              
+              {item.achievements && (
+                <ul className={styles.mobileCardAchievements}>
+                  {item.achievements.map((ach, i) => (
+                    <li key={i}>{ach}</li>
+                  ))}
+                </ul>
+              )}
+              
+              <div className={styles.mobileCardTags}>
+                {item.tags.map(tag => (
+                  <span key={tag.name} className={styles.mobileCardTag}>
+                    {tag.icon} {tag.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }
