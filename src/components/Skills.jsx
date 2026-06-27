@@ -248,6 +248,12 @@ export default function Skills() {
 
       </div>
 
+      <ul className="sr-only" aria-label="List of skills and technologies">
+        {allSkills.map(skill => (
+          <li key={skill}>{skill}</li>
+        ))}
+      </ul>
+
       <div style={{ position: 'relative', width: '100%', paddingBottom: '3rem', zIndex: 10 }}>
         <div style={{ height: '80px', width: '100%', position: 'relative', marginTop: '1rem', zIndex: 10 }}>
           <LogoLoop 

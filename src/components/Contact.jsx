@@ -84,6 +84,14 @@ export default function Contact() {
 
   const y = useTransform(scrollYProgress, [0, 1], ["-50%", "0%"]);
 
+  if (pathname === '/contact') {
+    return (
+      <div style={{ position: 'relative', width: '100%', zIndex: 10, marginTop: 'auto' }}>
+        <Footer forceShow={true} transparent={false} />
+      </div>
+    )
+  }
+
   return (
     <div ref={container} className={styles.perspectiveWrapper}>
       <motion.section 

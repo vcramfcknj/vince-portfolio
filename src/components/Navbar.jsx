@@ -144,8 +144,8 @@ export default function Navbar() {
           scrolled={scrolled}
           items={menuLinks.map((item) => ({ label: item.label, link: item.href }))}
           socialItems={[
-            { label: 'LinkedIn', link: 'https://linkedin.com' },
-            { label: 'GitHub', link: 'https://github.com' }
+            { label: 'LinkedIn', link: 'https://www.linkedin.com/in/rubang-vince-marc-justine-3484963a3/' },
+            { label: 'GitHub', link: 'https://github.com/vcramfcknj' }
           ]}
         />
       </div>

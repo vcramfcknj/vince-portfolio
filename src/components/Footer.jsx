@@ -18,7 +18,7 @@ export default function Footer({ forceShow = false, transparent = false }) {
     >
       <div className={styles.footerLeft}>
         <span className={styles.footerName}>Vince Marc Justine O. Rubang</span>
-        <span className={styles.footerMeta}>BS Information Technology · Ilocos Sur Polytechnic State College</span>
+        <span className={styles.footerMeta}>BS Information Technology Graduate · Ilocos Sur Polytechnic State College</span>
       </div>
       <div className={styles.footerRight}>
         <div className={styles.footerLinks}>

@@ -11,7 +11,7 @@ const initialAwards = [
     title: 'Web & Mobile Dev of the Year',
     issuer: 'ISPSC',
     year: '2026',
-    image: '/images/certificates/web&mobile.jpg',
+    image: '/images/certificates/web-mobile.jpg',
     tags: ['Web Dev', 'Mobile', 'React', 'Next.js'],
     description: 'Awarded for exemplary skills and notable distinction in developing intelligent and highly performant web applications.'
   },
@@ -29,7 +29,7 @@ const initialAwards = [
     title: '220-Hour OJT / Internship',
     issuer: 'Erovoutika Ph, Inc.',
     year: '2026',
-    image: '/images/certificates/Intersnhip.jpg',
+    image: '/images/certificates/internship.jpg',
     tags: ['OJT', 'Full Stack', 'Web'],
     description: 'Completed extensive on-the-job training, deploying real-world software solutions and collaborating in an agile team.'
   }

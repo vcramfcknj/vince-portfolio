@@ -241,6 +241,7 @@ export default function Carousel({
       <motion.div
         className={styles.carouselTrack}
         drag="x"
+        dragDirectionLock
         {...dragProps}
         style={{
           width: itemWidth,

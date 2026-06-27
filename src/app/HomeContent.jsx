@@ -10,18 +10,18 @@ import Projects from '@/components/Projects'
 import Skills from '@/components/Skills'
 
 export default function HomeContent() {
-  const [showPreloader, setShowPreloader] = useState(false)
+  const [showPreloader, setShowPreloader] = useState(true)
   const [isFirstLoad, setIsFirstLoad] = useState(true)
+  const [instantHide, setInstantHide] = useState(false)
 
   useEffect(() => {
     // Only show preloader if it hasn't been shown in this session
     const hasShown = sessionStorage.getItem('hasShownPreloader')
     if (!hasShown) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setShowPreloader(true)
       sessionStorage.setItem('hasShownPreloader', 'true')
     } else {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setInstantHide(true)
+      setShowPreloader(false)
       setIsFirstLoad(false)
     }
   }, [])
@@ -32,9 +32,11 @@ export default function HomeContent() {
 
   return (
     <>
-      <AnimatePresence>
-        {showPreloader && <Preloader onComplete={handlePreloaderComplete} />}
-      </AnimatePresence>
+      {!instantHide && (
+        <AnimatePresence>
+          {showPreloader && <Preloader onComplete={handlePreloaderComplete} />}
+        </AnimatePresence>
+      )}
 
       <main>
         <EnhancedHero isFirstLoad={isFirstLoad} />

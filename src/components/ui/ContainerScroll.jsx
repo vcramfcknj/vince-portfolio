@@ -40,7 +40,7 @@ export const ContainerScroll = ({
     >
       <div className={styles.perspectiveWrapper}>
         <Header translate={translate} titleComponent={titleComponent} />
-        <Card rotate={rotate} scale={scale}>
+        <Card rotate={rotate} scale={scale} isMobile={isMobile}>
           {children}
         </Card>
       </div>
@@ -64,13 +64,14 @@ export const Header = ({ translate, titleComponent }) => {
 export const Card = ({
   rotate,
   scale,
+  isMobile,
   children,
 }) => {
   return (
     <motion.div
       style={{
         rotateX: rotate,
-        scale,
+        scale: isMobile ? 1 : scale,
       }}
       className={styles.card}
     >

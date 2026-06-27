@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import styles from './About.module.css'
 import MagneticButton from './ui/MagneticButton'
 
-const mainText = "I'm an Information Technology graduate passionate about building intelligent and immersive digital experiences. With a strong foundation in web development and systems thinking, I focus on crafting scalable applications that solve real-world problems."
+const mainText = "I'm a BS Information Technology graduate passionate about building intelligent and immersive digital experiences. With a strong foundation in web development and systems thinking, I focus on crafting scalable applications that solve real-world problems."
 const subText = "I have hands-on expertise in HTML, CSS, JavaScript, and MySQL. Recognized as Web and Mobile Developer of the Year at ISPSC, and completed an internship at Erovoutika Ph, Inc. Currently diving deeper into cloud infrastructure and AI-powered development."
 
 const mainWords = mainText.trim().split(/\s+/)

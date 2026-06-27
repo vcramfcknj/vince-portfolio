@@ -124,7 +124,7 @@ export default function AboutPage() {
 
 
       {/* ── FULL WIDTH: AWARDS & CERTIFICATIONS ── */}
-      <section className={styles.fullWidthSection}>
+      <section id="awards" className={styles.fullWidthSection}>
         <div className={styles.fullWidthHeader}>
             <h2 className={styles.drivesTitle} style={{ marginBottom: '2rem' }}>What I&apos;ve Earned</h2>
           </div>
@@ -217,7 +217,7 @@ export default function AboutPage() {
                   <div className={styles.doingIcon}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                   </div>
-                  <span>Completing my BS Information Technology</span>
+                  <span>Seeking new opportunities in tech</span>
                 </li>
               </ul>
             </div>

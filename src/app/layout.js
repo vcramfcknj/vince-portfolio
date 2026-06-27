@@ -29,13 +29,13 @@ const playfair = Playfair_Display({
 export const metadata = {
   title: 'Vince Rubang | IT Professional & Developer',
   description:
-    'Portfolio of Vince Marc Justine Rubang — BS IT Student, Full-Stack Developer, and IT Professional building clean digital experiences.',
+    'Portfolio of Vince Marc Justine Rubang — BS IT Graduate, Full-Stack Developer, and IT Professional building clean digital experiences.',
   keywords: 'Vince Rubang, Portfolio, Web Development, IT Professional, Full-Stack Developer',
   authors: [{ name: 'Vince Rubang' }],
   openGraph: {
     title: 'Vince Rubang | IT Professional & Developer',
     description: 'Portfolio of Vince Marc Justine Rubang — BS IT Student & Developer',
-    url: 'https://vincerubang.dev',
+    url: 'https://v1nchnzo.vercel.app',
     siteName: "Vince Rubang's Portfolio",
     locale: 'en_US',
     type: 'website',
