@@ -39,6 +39,14 @@ export const metadata = {
     siteName: "Vince Rubang's Portfolio",
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: 'https://v1nchnzo.vercel.app/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: "Vince Rubang — IT Professional & Developer",
+      },
+    ],
   },
 }
 
