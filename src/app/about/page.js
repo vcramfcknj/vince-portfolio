@@ -135,23 +135,25 @@ export default function AboutPage() {
 
 
 
-      <div style={{ position: 'relative', width: '100%', overflow: 'visible' }}>
-        {/* LANYARD BACKGROUND */}
-        <div className={styles.lanyardContainer}>
-           <DynamicLanyard 
-             position={[0, 1.2, 16]} 
-             gravity={[0, -40, 0]} 
-             frontImage="/images/id.jpg"
-           />
-        </div>
-
-        {/* ── DIVIDER ── */}
-        <div className={styles.heroDividerContainer} style={{ marginBottom: '6rem', position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+      {/* ── SECTION SEPARATION WITH HANGING LANYARD ── */}
+      <div className={styles.lanyardDividerSection}>
+        {/* Visible horizontal divider line */}
+        <div className={styles.dividerLineWrapper}>
           <hr className={styles.heroDivider} />
         </div>
 
-        {/* ── SPLIT: TECH STACK & CURRENTLY DOING ── */}
-        <section className={styles.splitSection} style={{ position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+        {/* Lanyard hanging right from the divider line */}
+        <div className={styles.lanyardContainer}>
+          <DynamicLanyard 
+            position={[0, 1.2, 16]} 
+            gravity={[0, -40, 0]} 
+            frontImage="/images/id.jpg"
+          />
+        </div>
+      </div>
+
+      {/* ── SPLIT: TECH STACK & CURRENTLY DOING ── */}
+      <section className={styles.splitSection}>
           <div className={styles.splitGrid}>
             
             <div className={styles.splitLeft} style={{ pointerEvents: 'auto' }}>
@@ -234,7 +236,6 @@ export default function AboutPage() {
           </blockquote>
           <div className={styles.quoteAuthor} style={{ pointerEvents: 'auto' }}>— Vince Rubang</div>
         </section>
-      </div>
 
     </div>
   )
