@@ -33,7 +33,7 @@
   border-left: 2px solid var(--border-mid);
   padding-left: 1.5rem;
   margin-bottom: 3rem;
-  min-height: 160px; /* Prevents layout shift during animation */
+  min-height: 320px; /* Tall enough for longest description — prevents layout shift */
 }
 
 .spotlightBadge {
@@ -238,8 +238,9 @@
 .certImage {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Certificates usually shouldn't be cropped */
-  background: white; /* Force white background for cert images so transparent PNGs look right */
+  object-fit: cover; /* Fill the card fully — crops edges slightly but no letterboxing */
+  object-position: center top; /* Keep the top of the cert (the important part) visible */
+  background: white;
 }
 
 .fallbackIcon {

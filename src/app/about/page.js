@@ -135,7 +135,7 @@ export default function AboutPage() {
 
 
 
-      <div style={{ position: 'relative', width: '100%' }}>
+      <div style={{ position: 'relative', width: '100%', overflow: 'visible' }}>
         {/* LANYARD BACKGROUND */}
         <div className={styles.lanyardContainer}>
            <DynamicLanyard 

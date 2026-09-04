@@ -32,6 +32,42 @@ const initialAwards = [
     image: '/images/certificates/internship.jpg',
     tags: ['OJT', 'Full Stack', 'Web'],
     description: 'Completed extensive on-the-job training, deploying real-world software solutions and collaborating in an agile team.'
+  },
+  {
+    id: 4,
+    title: 'Introduction to CSS',
+    issuer: 'TESDA Online Program',
+    year: '2026',
+    image: '/images/certificates/tesda-css.jpg',
+    tags: ['CSS', 'Web Design', 'TESDA', 'Front-End'],
+    description: 'Completed the TESDA-accredited course on CSS fundamentals, covering styling, layouts, and modern web design techniques.'
+  },
+  {
+    id: 5,
+    title: 'NetOps Certified Engineer (NTO-101)',
+    issuer: 'Appkademiya',
+    year: '2026',
+    image: '/images/certificates/appkademiya-netops.jpg',
+    tags: ['NetOps', 'Cybersecurity', 'Networking', 'ISO 27001'],
+    description: 'Digitally verified certification in network operations engineering, authorized by a CISSP & ISO 27001 Lead Auditor.'
+  },
+  {
+    id: 6,
+    title: 'Prompt Like an Engineer',
+    issuer: 'Cisco Networking Academy',
+    year: '2026',
+    image: '/images/certificates/cisco-prompt-engineer.jpg',
+    tags: ['AI', 'Prompt Engineering', 'Cisco', 'DICT-ITU'],
+    description: 'Completed the Cisco Networking Academy course on AI prompt engineering, offered through the DICT-ITU DTC Initiative.'
+  },
+  {
+    id: 7,
+    title: 'Installing & Configuring Computer Systems',
+    issuer: 'TESDA Online Program',
+    year: '2026',
+    image: '/images/certificates/tesda-computer-systems.jpg',
+    tags: ['Hardware', 'Computer Systems', 'TESDA', 'IT Support'],
+    description: 'TESDA-accredited course covering the installation, configuration, and maintenance of computer hardware and operating systems.'
   }
 ]
 
@@ -85,7 +121,7 @@ export default function AwardsCarousel() {
         {/* Metrics Section */}
         <div className={styles.metricsRow}>
           <div className={styles.metric}>
-            <h4>3+</h4>
+            <h4>7+</h4>
             <span>Certificates</span>
           </div>
           <div className={styles.metric}>
