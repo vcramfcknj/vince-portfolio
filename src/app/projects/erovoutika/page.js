@@ -3,9 +3,11 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import LaptopFrame from '@/components/ui/LaptopFrame'
 import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react'
 import styles from '../ProjectDetail.module.css'
+import ProjectLinks from '@/app/projects/ProjectLinks'
 
 export default function ErovoutikaProjectPage() {
   
@@ -63,6 +65,8 @@ export default function ErovoutikaProjectPage() {
               </a>
             </div>
 
+            <ProjectLinks slug="erovoutika" />
+
             <div className={styles.heroMetaGrid}>
               <div className={styles.metaBlock}>
                 <span className={styles.metaLabel}>Duration / Location</span>
@@ -77,13 +81,15 @@ export default function ErovoutikaProjectPage() {
 
           <div className={styles.heroRight}>
             <div className={styles.heroShowcase}>
+              <LaptopFrame>
               <Image 
                 src="/projects/erovoutika/Screenshot 2026-06-11 161220.png" 
                 alt="Erovoutika Ph Platform Showcase"
-                fill
+                width={1899}
+                height={874}
                 priority
-                className={styles.showcaseImage}
               />
+              </LaptopFrame>
             </div>
           </div>
 

@@ -75,8 +75,12 @@ const socials = [
 
 export default function Contact() {
   const pathname = usePathname();
-  
-  if (pathname === '/contact') {
+
+  // Only render the bare footer (no Ferrofluid / no big contact section)
+  // on the contact page and on legal / info pages.
+  const footerOnlyPaths = ['/contact', '/privacy', '/terms', '/disclaimer'];
+
+  if (footerOnlyPaths.includes(pathname)) {
     return (
       <div style={{ position: 'relative', width: '100%', zIndex: 10, marginTop: 'auto' }}>
         <Footer forceShow={true} transparent={false} />

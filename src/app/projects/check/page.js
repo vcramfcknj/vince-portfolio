@@ -3,8 +3,10 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import LaptopFrame from '@/components/ui/LaptopFrame'
 import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import ProjectLinks from '@/app/projects/ProjectLinks'
 import styles from '../ProjectDetail.module.css'
 
 export default function CheckProjectPage() {
@@ -58,6 +60,8 @@ export default function CheckProjectPage() {
               </a>
             </div>
 
+            <ProjectLinks slug="check" />
+
             <div className={styles.heroMetaGrid}>
               <div className={styles.metaBlock}>
                 <span className={styles.metaLabel}>Timeline</span>
@@ -72,13 +76,15 @@ export default function CheckProjectPage() {
 
           <div className={styles.heroRight}>
             <div className={styles.heroShowcase}>
+              <LaptopFrame>
               <Image 
                 src="/projects/check/check landing.png" 
                 alt="C.H.E.C.K System Showcase"
-                fill
+                width={1888}
+                height={866}
                 priority
-                className={styles.showcaseImage}
               />
+              </LaptopFrame>
             </div>
           </div>
 

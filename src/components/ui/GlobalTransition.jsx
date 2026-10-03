@@ -16,6 +16,27 @@ export default function GlobalTransition({ children }) {
 
   const [displayTitle, setDisplayTitle] = useState("Home")
 
+  // Static assets are real browser downloads/views, never router routes.
+  const FILE_LINK = /\.(pdf|docx?|xlsx?|pptx?|zip|rar|csv|txt|md|json|xml|png|jpe?g|gif|webp|avif|svg|ico|mp3|mp4|webm|mov|woff2?|ttf|eot)$/i
+
+  const TITLES = {
+    '/': 'Home',
+    '/about': 'About',
+    '/projects': 'Projects',
+    '/contact': 'Contact',
+    '/cv': 'Résumé',
+    '/privacy': 'Privacy',
+    '/terms': 'Terms',
+    '/disclaimer': 'Disclaimer',
+  }
+
+  const retract = () => {
+    setIsActive(false)
+    setTargetPath(null)
+    window.__isCurtainDown = false
+    window.dispatchEvent(new CustomEvent('curtain-exiting', { detail: { duration: 0.45 } }))
+  }
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setDimension({ width: window.innerWidth, height: window.innerHeight })
@@ -29,9 +50,15 @@ export default function GlobalTransition({ children }) {
 
       if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) return
 
+      // Let the browser handle anything that is not an in-app route: new tabs,
+      // downloads and files such as the résumé PDF.
+      if (anchor.target && anchor.target !== '_self') return
+      if (anchor.hasAttribute('download')) return
 
       const url = new URL(anchor.href)
 
+      if (url.origin !== window.location.origin) return
+      if (FILE_LINK.test(url.pathname)) return
 
       if (url.pathname === window.location.pathname && url.hash) return
 
@@ -39,22 +66,27 @@ export default function GlobalTransition({ children }) {
         e.preventDefault()
         e.stopPropagation()
 
-        let title = "Home"
-        if (url.pathname === '/about') title = "About"
-        else if (url.pathname === '/projects') title = "Projects"
-        else if (url.pathname === '/contact') title = "Contact"
-        else if (url.pathname.startsWith('/projects/')) title = "Project"
+        const title = TITLES[url.pathname] || (url.pathname.startsWith('/projects/') ? 'Project' : 'Vince Rubang')
 
         setDisplayTitle(title)
         setTargetPath(href)
         setIsActive(true)
         window.__isCurtainDown = true
+
+        // Watchdog: if the route never lands (failed push, off-by-router
+        // redirect), the pathname effect can't fire and the curtain would
+        // stay down forever. Retract instead of leaving a black screen.
+        const fromPath = window.location.pathname
+        setTimeout(() => {
+          if (window.location.pathname === fromPath) retract()
+        }, 2500)
       }
     }
 
 
     document.addEventListener('click', handleLinkClick, true)
     return () => document.removeEventListener('click', handleLinkClick, true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the interceptor only reads live DOM/window state and stable setters, so it must bind once.
   }, [])
 
   const handleCoverComplete = () => {
@@ -68,13 +100,11 @@ export default function GlobalTransition({ children }) {
     if (isActive) {
 
       const timer = setTimeout(() => {
-        setIsActive(false)
-        window.__isCurtainDown = false
-        window.dispatchEvent(new CustomEvent('curtain-exiting', { detail: { duration: 0.45 } }))
-        setTargetPath(null)
+        retract()
       }, 350)
       return () => clearTimeout(timer)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the curtain timer must key off pathname (the actual navigation) and intentionally not isActive, which would restart the timeout mid-transition.
   }, [pathname])
 
   const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + 300} 0 ${dimension.height} L0 0`

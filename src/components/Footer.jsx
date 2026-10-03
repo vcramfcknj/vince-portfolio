@@ -22,6 +22,8 @@ export default function Footer({ forceShow = false, transparent = false }) {
       </div>
       <div className={styles.footerRight}>
         <div className={styles.footerLinks}>
+          <Link href="/cv" className={styles.footerLink}>Résumé</Link>
+          <span className={styles.footerSep}>·</span>
           <Link href="/privacy" className={styles.footerLink}>Privacy Policy</Link>
           <span className={styles.footerSep}>·</span>
           <Link href="/terms" className={styles.footerLink}>Terms & Conditions</Link>

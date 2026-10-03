@@ -104,3 +104,35 @@ button { font-family: inherit; }
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
+
+/* ─── Print ──────────────────────────────────────── */
+/* Site chrome lives in the root layout, so /cv strips it here instead of
+   duplicating the whole layout tree. Screen styles are untouched. */
+@media print {
+  nav,
+  footer,
+  #contact,
+  #home,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    overflow: visible !important;
+  }
+
+  /* Lenis and the page transitions leave transforms/opacities behind that
+     would clip or fade printed content. */
+  html[data-scroll-behavior] {
+    height: auto !important;
+  }
+
+  main,
+  main * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

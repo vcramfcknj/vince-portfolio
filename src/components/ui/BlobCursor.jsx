@@ -28,53 +28,125 @@ export default function BlobCursor({
 }) {
   const containerRef = useRef(null);
   const blobsRef = useRef([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
+  const mouseRef = useRef({ x: 0, y: 0, inside: false });
+  const rectRef = useRef({ left: 0, top: 0, width: 0, height: 0 });
+  const visibleRef = useRef(false);
+  const [pointerVisible, setPointerVisibleState] = useState(false);
   const [snapTarget, setSnapTarget] = useState(null);
   const animationRef = useRef();
 
-  const updateOffset = useCallback(() => {
-    if (!containerRef.current) return { left: 0, top: 0 };
-    const rect = containerRef.current.getBoundingClientRect();
-    return { left: rect.left, top: rect.top };
+  // The section scrolls around under the pointer, so the container rect is
+  // cached and refreshed on scroll/resize instead of measured per pointer
+  // event.
+  const measure = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    rectRef.current = { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+  }, []);
+
+  const moveBlobsTo = useCallback(
+    (x, y, follow) => {
+      blobsRef.current.forEach((el, i) => {
+        if (!el) return;
+        const isLead = i === 0;
+        if (follow) {
+          gsap.to(el, {
+            x,
+            y,
+            duration: isLead ? fastDuration : slowDuration,
+            ease: isLead ? fastEase : slowEase
+          });
+        } else {
+          // Jump straight under the pointer so the blob never slides in from a
+          // stale resting position when it becomes visible again.
+          gsap.set(el, { x, y });
+        }
+      });
+    },
+    [fastDuration, slowDuration, fastEase, slowEase]
+  );
+
+  // The blob belongs to this section only: it fades in when the pointer enters
+  // and out when it leaves, instead of hard-clipping at the section edge. The
+  // fade itself is a CSS transition, so it can never get stuck mid-tween.
+  const setPointerVisible = useCallback((visible) => {
+    if (visibleRef.current === visible) return;
+    visibleRef.current = visible;
+    setPointerVisibleState(visible);
   }, []);
 
   const handleMove = useCallback(
     e => {
-      const { left, top } = updateOffset();
-      const x = 'clientX' in e ? e.clientX : e.touches[0].clientX;
-      const y = 'clientY' in e ? e.clientY : e.touches[0].clientY;
-      mouseRef.current = { x: x - left, y: y - top };
+      const clientX = 'clientX' in e ? e.clientX : e.touches?.[0]?.clientX;
+      const clientY = 'clientY' in e ? e.clientY : e.touches?.[0]?.clientY;
+      if (clientX == null || clientY == null) return;
 
-      if (snapTarget) return; // Do not animate via mouse move if snapped
+      const { left, top, width, height } = rectRef.current;
+      const inside = clientX >= left && clientX <= left + width && clientY >= top && clientY <= top + height;
+      const wasVisible = visibleRef.current;
 
-      blobsRef.current.forEach((el, i) => {
-        if (!el) return;
-        const isLead = i === 0;
-        gsap.to(el, {
-          x: mouseRef.current.x,
-          y: mouseRef.current.y,
-          duration: isLead ? fastDuration : slowDuration,
-          ease: isLead ? fastEase : slowEase
-        });
-      });
+      mouseRef.current = { x: clientX - left, y: clientY - top, inside };
+
+      if (!inside) {
+        setPointerVisible(false);
+        // Leaving the section also drops any logo snap, otherwise the blob
+        // keeps chasing a marquee item the pointer is no longer over.
+        if (snapTarget) setSnapTarget(null);
+        return;
+      }
+
+      setPointerVisible(true);
+      if (!wasVisible) {
+        // Re-entering: put the blob under the pointer right away instead of
+        // letting it slide in from wherever it was left.
+        moveBlobsTo(mouseRef.current.x, mouseRef.current.y, false);
+      }
+      if (snapTarget) return; // the snap loop owns the transform while snapped
+
+      moveBlobsTo(mouseRef.current.x, mouseRef.current.y, true);
     },
-    [updateOffset, fastDuration, slowDuration, fastEase, slowEase, snapTarget]
+    [setPointerVisible, moveBlobsTo, snapTarget]
   );
 
-  useEffect(() => {
-    const onResize = () => updateOffset();
-    window.addEventListener('resize', onResize);
-    window.addEventListener('mousemove', handleMove);
-    window.addEventListener('touchmove', handleMove);
-    return () => {
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('mousemove', handleMove);
-      window.removeEventListener('touchmove', handleMove);
-    };
-  }, [updateOffset, handleMove]);
+  // Pointer leaves the browser window (or the tab loses focus) while still
+  // inside the section bounds: no further mousemove will ever arrive, so hide
+  // the blob instead of leaving it parked at the edge.
+  const hideAll = useCallback(() => {
+    mouseRef.current.inside = false;
+    setSnapTarget(null);
+    setPointerVisible(false);
+  }, [setPointerVisible]);
 
   useEffect(() => {
-    const handleSnap = (e) => setSnapTarget(e.detail.target);
+    measure();
+    window.addEventListener('resize', measure);
+    window.addEventListener('scroll', measure, { passive: true });
+    return () => {
+      window.removeEventListener('resize', measure);
+      window.removeEventListener('scroll', measure);
+    };
+  }, [measure]);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('touchmove', handleMove);
+    document.addEventListener('mouseleave', hideAll);
+    window.addEventListener('blur', hideAll);
+    return () => {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('touchmove', handleMove);
+      document.removeEventListener('mouseleave', hideAll);
+      window.removeEventListener('blur', hideAll);
+    };
+  }, [handleMove, hideAll]);
+
+  useEffect(() => {
+    const handleSnap = (e) => {
+      const target = e.detail?.target;
+      if (!target) return;
+      setSnapTarget(target);
+    };
     const handleRelease = () => setSnapTarget(null);
 
     window.addEventListener('blob-snap', handleSnap);
@@ -95,6 +167,12 @@ export default function BlobCursor({
       });
 
       const animateSnap = () => {
+        // The snapped logo can be unmounted or slide out from under the pointer
+        // without the browser ever firing a leave event; stop chasing it.
+        if (!snapTarget.isConnected) {
+          setSnapTarget(null);
+          return;
+        }
         const rect = snapTarget.getBoundingClientRect();
         const containerRect = containerRef.current.getBoundingClientRect();
         
@@ -151,7 +229,10 @@ export default function BlobCursor({
         </svg>
       )}
 
-      <div className={styles.blobMain} style={{ filter: useFilter ? `url(#${filterId})` : undefined }}>
+      <div
+        className={`${styles.blobMain} ${pointerVisible ? '' : styles.blobHidden}`}
+        style={{ filter: useFilter ? `url(#${filterId})` : undefined }}
+      >
         {Array.from({ length: trailCount }).map((_, i) => (
           <div
             key={i}

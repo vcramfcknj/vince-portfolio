@@ -1,6 +1,6 @@
 .scrollToTop {
   position: fixed;
-  bottom: 2rem;
+  bottom: calc(2rem + var(--scrolltop-lift, 0px));
   right: 2rem;
   width: 3.5rem;
   height: 3.5rem;
@@ -35,7 +35,7 @@
 
 @media (max-width: 768px) {
   .scrollToTop {
-    bottom: 1.5rem;
+    bottom: calc(1.5rem + var(--scrolltop-lift, 0px));
     right: 1.5rem;
     width: 3rem;
     height: 3rem;

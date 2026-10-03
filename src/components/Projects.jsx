@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import Link from 'next/link'
+import Image from 'next/image'
 import styles from './Projects.module.css'
 import useScrollReveal from '@/hooks/useScrollReveal'
 import MagneticButton from './ui/MagneticButton'
@@ -148,9 +149,12 @@ export default function Projects() {
           <div style={{ top: index * -100 + "%" }} className={styles.modalSlider}>
             {projects.map((proj, i) => (
               <div key={`modal_${i}`} className={styles.modal} style={{ backgroundColor: proj.color }}>
-                <img 
-                  src={proj.src} 
+                <Image
+                  src={proj.src}
                   alt={proj.title}
+                  width={1200}
+                  height={800}
+                  sizes="100vw"
                   className={styles.modalImage}
                 />
               </div>
@@ -178,4 +182,4 @@ export default function Projects() {
       </div>
     </section>
   )
-}
+}

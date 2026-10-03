@@ -1,0 +1,61 @@
+.laptop {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.45));
+}
+
+/* Lid: dark bezel around the screen */
+.lid {
+  width: 100%;
+  background: linear-gradient(180deg, #2b2b30 0%, #17171a 100%);
+  border-radius: 16px 16px 4px 4px;
+  padding: 3% 3% 3.6%;
+}
+
+/* Screen: sizes to the image's natural ratio so screenshots fit perfectly */
+.screen {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #0a0a0c;
+}
+
+.screen img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Gentle zoom when the frame is hovered */
+.laptop:hover .screen img {
+  transform: scale(1.06);
+}
+
+/* Base / hinge bar, slightly wider than the lid */
+.base {
+  position: relative;
+  width: 116%;
+  height: 0.85rem;
+  margin-top: -2px;
+  background: linear-gradient(180deg, #4a4a50 0%, #2a2a2e 55%, #1b1b1e 100%);
+  border-radius: 0 0 14px 14px;
+}
+
+/* Trackpad notch on the base */
+.base::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16%;
+  height: 42%;
+  background: #141416;
+  border-radius: 0 0 8px 8px;
+}

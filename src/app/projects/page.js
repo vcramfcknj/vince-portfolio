@@ -184,7 +184,7 @@ export default function ProjectsPage() {
             <div className={styles.listCol4}>YEAR</div>
           </div>
         )}
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {filteredProjects.map((proj, i) => (
             <motion.div
               key={`${proj.id}-${view}`}
@@ -195,7 +195,7 @@ export default function ProjectsPage() {
             >
               <Link 
                 href={proj.href} 
-                label={proj.title} 
+                aria-label={proj.title} 
                 className={styles.projectLink}
                 onMouseEnter={() => setModal({ active: true, index: i })}
                 onMouseLeave={() => setModal({ active: false, index: i })}
@@ -248,9 +248,12 @@ export default function ProjectsPage() {
               {filteredProjects.map((proj, i) => (
                 <div key={`modal_${i}`} className={styles.modal} style={{ backgroundColor: proj.color }}>
                   {proj.image && (
-                    <img 
-                      src={proj.image} 
+                    <Image
+                      src={proj.image}
                       alt={proj.title}
+                      width={1200}
+                      height={800}
+                      sizes="100vw"
                       className={styles.modalImage}
                     />
                   )}

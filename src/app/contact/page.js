@@ -10,6 +10,39 @@ import SplashCursor from '@/components/ui/SplashCursor'
 import { useTheme } from '@/context/ThemeContext'
 import { Filter } from 'bad-words'
 
+// Web3Forms is a browser-side API. Their free tier rejects submissions that
+// originate from a server IP — it answers 403 "This method is not allowed. Use
+// our API in client side" — so the payload has to go from this page straight to
+// their endpoint, through a relay route. The access key is a public
+// identifier by their design: it only authorizes sending into Vince's inbox,
+// and the botcheck honeypot below is what keeps scrapers from abusing it.
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit'
+const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || ''
+const EMAIL = 'vincerubang28@gmail.com'
+
+const emptyForm = () => ({
+  name: '',
+  email: '',
+  organization: '',
+  services: '',
+  message: '',
+  botcheck: ''
+})
+
+// A failed submission should never lose the inquiry: build a prefilled draft
+// from whatever the visitor typed so they can send it from their own mail app.
+const buildMailtoFallback = (data) => {
+  const body = [
+    `Name: ${data.name}`,
+    `Email: ${data.email}`,
+    `Organization: ${data.organization}`,
+    `Looking for: ${data.services}`,
+    '',
+    data.message
+  ].join('\n')
+  return `mailto:${EMAIL}?subject=${encodeURIComponent(`Portfolio inquiry from ${data.name}`)}&body=${encodeURIComponent(body)}`
+}
+
 // Initialize the profanity filter and add our custom threat words
 const filter = new Filter();
 filter.addWords('kill', 'murder', 'die', 'suicide', 'stab', 'shoot', 'bomb', 'terrorist', 'massacre', 'kys', 'rape');
@@ -27,18 +60,26 @@ export default function ContactPage() {
   const { theme } = useTheme()
   const splashColor = theme === 'light' ? '#000000' : '#ffffff'
   
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    organization: '',
-    services: '',
-    message: ''
-  })
+  const [formData, setFormData] = useState(emptyForm)
   const [status, setStatus] = useState("idle");
   const [statusMessage, setStatusMessage] = useState("");
+  const [fallbackHref, setFallbackHref] = useState("");
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    // Typing again means the visitor is still here editing their attempt, so a
+    // stale error and its rescue link should go away instead of hanging around.
+    setStatus("idle");
+    setStatusMessage("");
+    setFallbackHref("");
+  }
+
+  // Errors stay visible on purpose — auto-hiding a message that carries the
+  // only working way to reach Vince would just leave the visitor stuck.
+  const reportFailure = (detail, data) => {
+    setStatus("error");
+    setStatusMessage(detail);
+    setFallbackHref(buildMailtoFallback(data));
   }
 
   const handleSubmit = async (e) => {
@@ -69,51 +110,68 @@ export default function ContactPage() {
       return;
     }
 
+    // Honeypot: a field no human can see. Bots fill everything they find and
+    // get discarded quietly so they never learn which field gave them away.
+    if (formData.botcheck) {
+      setFormData(emptyForm());
+      return;
+    }
+
+    if (!WEB3FORMS_ACCESS_KEY) {
+      reportFailure("This site's form isn't wired up yet — email Vince directly.", formData);
+      return;
+    }
+
     setStatus("sending");
     setStatusMessage("");
+    setFallbackHref("");
+
+    const payload = {
+      access_key: WEB3FORMS_ACCESS_KEY,
+      botcheck: formData.botcheck,
+      subject: `New Portfolio Inquiry from ${formData.name}`,
+      from_name: formData.name,
+      replyTo: formData.email,
+      // Their docs recommend an expiry so a captured payload can't be replayed
+      // later against the same access key.
+      expiresAt: new Date(Date.now() + 120000).toISOString(),
+      name: formData.name,
+      email: formData.email,
+      organization: formData.organization,
+      services: formData.services,
+      message: formData.message,
+    }
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({
-          access_key: "7aed33f2-51e9-4eb2-9d4c-047b067f8fb3", // Replace with your key
-          name: formData.name,
-          email: formData.email,
-          organization: formData.organization,
-          services: formData.services,
-          message: formData.message,
-          subject: `New Portfolio Inquiry from ${formData.name}`,
-        }),
+        body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
-      if (result.success) {
+      const result = await response.json().catch(() => ({}));
+      if (response.ok && result.success) {
         setStatus("success");
         setStatusMessage("Message sent successfully!");
-        setFormData({ name: '', email: '', organization: '', services: '', message: '' });
+        setFormData(emptyForm());
         setTimeout(() => {
           setStatus("idle");
           setStatusMessage("");
         }, 5000);
       } else {
-        setStatus("error");
-        setStatusMessage("Something went wrong. Please try again.");
-        setTimeout(() => {
-          setStatus("idle");
-          setStatusMessage("");
-        }, 5000);
+        // Their reply says what actually went wrong (unverified key, quota,
+        // expired payload), which beats a shrug.
+        const reason = String(result.message || result.error || '').trim();
+        reportFailure(
+          reason ? `Submission refused: ${reason}` : 'The mail service refused the submission. Please try again.',
+          formData
+        );
       }
     } catch (error) {
-      setStatus("error");
-      setStatusMessage("Something went wrong. Please try again.");
-      setTimeout(() => {
-        setStatus("idle");
-        setStatusMessage("");
-      }, 5000);
+      reportFailure("Couldn't reach the mail service — check your connection and retry.", formData);
     }
   }
 
@@ -214,6 +272,18 @@ export default function ContactPage() {
               ></textarea>
             </div>
 
+            {/* Honeypot — see the botcheck note in handleSubmit. */}
+            <input
+              type="text"
+              name="botcheck"
+              className={styles.hp}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={formData.botcheck}
+              onChange={handleChange}
+            />
+
             {/* Status Message Indicator */}
             <AnimatePresence>
               {statusMessage && (
@@ -223,7 +293,7 @@ export default function ContactPage() {
                   exit={{ opacity: 0, y: -10 }}
                   style={{
                     display: 'flex',
-                    alignItems: 'center',
+                    alignItems: 'flex-start',
                     gap: '0.5rem',
                     color: status === 'error' ? '#ef4444' : '#22c55e',
                     marginTop: '1rem',
@@ -232,7 +302,14 @@ export default function ContactPage() {
                   }}
                 >
                   {status === 'error' ? <AlertCircle size={20} /> : <CheckCircle2 size={20} />}
-                  {statusMessage}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                    <span>{statusMessage}</span>
+                    {status === 'error' && fallbackHref && (
+                      <a href={fallbackHref} className={styles.fallbackLink}>
+                        Email me directly instead
+                      </a>
+                    )}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -249,7 +326,7 @@ export default function ContactPage() {
                   borderColor="transparent"
                   bgColor="var(--text)"
                   className={styles.circleBtn}
-                  onClick={handleSubmit}
+                  type="submit"
                   disabled={status === "sending"}
                 />
               </div>

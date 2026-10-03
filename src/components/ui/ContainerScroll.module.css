@@ -55,6 +55,17 @@
   }
 }
 
+/* Below the 768px step the copy alone is taller than the fixed 30rem card,
+   which used to leave an inner scrollbar inside the slide. Let the card grow
+   instead: .container keeps enough slack (60rem) to absorb it without
+   touching the next section. */
+@media (max-width: 767.98px) {
+  .card {
+    height: auto;
+    min-height: 30rem;
+  }
+}
+
 .cardInner {
   height: 100%;
   width: 100%;

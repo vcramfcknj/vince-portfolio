@@ -3,9 +3,11 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import LaptopFrame from '@/components/ui/LaptopFrame'
 import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import styles from '../ProjectDetail.module.css'
+import ProjectLinks from '@/app/projects/ProjectLinks'
 
 export default function ITSeminarProjectPage() {
   
@@ -58,6 +60,8 @@ export default function ITSeminarProjectPage() {
               </a>
             </div>
 
+            <ProjectLinks slug="it-seminar" />
+
             <div className={styles.heroMetaGrid}>
               <div className={styles.metaBlock}>
                 <span className={styles.metaLabel}>Date / Location</span>
@@ -72,13 +76,15 @@ export default function ITSeminarProjectPage() {
 
           <div className={styles.heroRight}>
             <div className={styles.heroShowcase}>
+              <LaptopFrame>
               <Image 
                 src="/projects/it-seminar/Hr-System.png" 
                 alt="HR System Showcase"
-                fill
+                width={1917}
+                height={876}
                 priority
-                className={styles.showcaseImage}
               />
+              </LaptopFrame>
             </div>
           </div>
 

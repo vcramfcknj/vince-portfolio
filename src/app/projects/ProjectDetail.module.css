@@ -106,6 +106,38 @@
   margin-bottom: 2rem;
 }
 
+/* Secondary row for live / source links. Sits close to the primary buttons so
+   the heroMetaGrid keeps its original position, and renders nothing at all
+   when a project has no public URL yet. */
+.extraLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: -1.2rem 0 2rem;
+}
+
+.linkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--text-dim);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.linkBtn:hover {
+  color: var(--text);
+  border-color: var(--border-mid);
+  background: transparent;
+}
+
 .primaryBtn {
   display: inline-flex;
   align-items: center;
@@ -174,15 +206,10 @@
   color: var(--text);
 }
 
+/* Plain container; the LaptopFrame provides the device look + shadow */
 .heroShowcase {
   position: relative;
-  aspect-ratio: 16 / 9;
   width: 100%;
-  border-radius: 1rem;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--bg-surface);
-  box-shadow: 0 16px 32px -10px rgba(0, 0, 0, 0.35);
 }
 
 .showcaseImage {
@@ -477,6 +504,14 @@
   margin-bottom: 0.5rem;
 }
 
+/* Both badge hues were picked for the dark theme. On white they measured
+   2.77:1 (red) and 1.74:1 (green) — far under the 4.5:1 floor, and the site
+   boots in light mode by default. Darken them only when the light theme is
+   active; the translucent fills keep working as the accent. */
+:global([data-theme='light']) .badgeChallenge {
+  color: #b91c1c;
+}
+
 .badgeSolution {
   display: inline-block;
   font-size: 0.7rem;
@@ -489,6 +524,10 @@
   padding: 0.2rem 0.55rem;
   border-radius: 0.35rem;
   margin-bottom: 0.5rem;
+}
+
+:global([data-theme='light']) .badgeSolution {
+  color: #15803d;
 }
 
 .challengeHeading {

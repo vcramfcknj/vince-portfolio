@@ -8,7 +8,7 @@ import CircularText from '@/components/ui/CircularText'
 import GlareHover from '@/components/ui/GlareHover'
 import DynamicLanyard from '@/components/ui/DynamicLanyard'
 import { FaEarthAmericas } from 'react-icons/fa6'
-import { icons, DefaultIcon } from '@/components/Skills'
+import TechIcon from '@/components/techIcons'
 import styles from './AboutPage.module.css'
 
 export const metadata = {
@@ -164,7 +164,7 @@ export default function AboutPage() {
                     <MagneticButton 
                       key={tech}
                       text={tech}
-                      icon={<div className={styles.techIcon}>{icons[tech] || <DefaultIcon />}</div>}
+                      icon={<div className={styles.techIcon}><TechIcon name={tech} /></div>}
                       className={styles.techTagItem}
                       color="var(--text-dim)"
                       bgColor="var(--bg)"
@@ -180,7 +180,7 @@ export default function AboutPage() {
                     <MagneticButton 
                       key={tech}
                       text={tech}
-                      icon={<div className={styles.techIcon}>{icons[tech] || <DefaultIcon />}</div>}
+                      icon={<div className={styles.techIcon}><TechIcon name={tech} /></div>}
                       className={styles.techTagItem}
                       color="var(--text-dim)"
                       bgColor="var(--bg)"

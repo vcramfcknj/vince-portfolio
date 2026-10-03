@@ -75,6 +75,34 @@
   resize: vertical;
 }
 
+/* Web3Forms honeypot. Parked off-screen rather than display:none, so it stays
+   in the rendered DOM where form-scraping bots look for it, and pointer-events
+   keeps a real finger out of it. */
+.hp {
+  position: absolute !important;
+  left: -10000px !important;
+  top: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+/* Shown only when a submission fails, so the inquiry still has a way out. */
+.fallbackLink {
+  display: inline-block;
+  width: fit-content;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.fallbackLink:hover {
+  opacity: 0.75;
+}
+
 .input::placeholder {
   color: var(--text-dim);
   font-weight: 400;

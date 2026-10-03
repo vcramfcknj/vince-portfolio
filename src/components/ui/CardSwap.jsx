@@ -96,6 +96,14 @@ const CardSwap = ({
 
     const swap = () => {
       if (order.current.length < 2) return;
+      /* While the tab is hidden rAF stops but setInterval keeps firing (throttled to
+         roughly 1/s), so every tick queued another drop on cards whose previous tween
+         had not moved yet. The `+=600` is relative, so the offsets compounded and the
+         cards ended up scattered ~1500px to the right of the stack — visible as
+         certificates flying in from far outside the page on return. Skip a beat while
+         the document is hidden or a swap is still running. */
+      if (typeof document !== 'undefined' && document.hidden) return;
+      if (tlRef.current && tlRef.current.isActive()) return;
 
       const [front, ...rest] = order.current;
       const elFront = refs[front].current;

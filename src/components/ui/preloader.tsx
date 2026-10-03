@@ -90,6 +90,7 @@ export default function Preloader({ onComplete, onExit }: PreloaderProps) {
     )
     
     return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- onExit is an optional, stable callback fired once on the last word; adding it to deps would risk restarting the word-cycle timer.
   }, [index, onComplete])
 
   const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + 300} 0 ${dimension.height} L0 0`

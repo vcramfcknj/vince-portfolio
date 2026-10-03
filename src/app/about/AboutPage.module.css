@@ -260,6 +260,16 @@
   min-width: 0;
 }
 
+/* The lanyard backdrop (z-index:-1) hangs behind this section. Make the whole
+   split grid click-through so pointer events reach the 3D card and its
+   drag/hover handlers. .splitLeft re-enables pointer-events inline so the
+   Tech Stack marquee keeps its pause-on-hover behaviour. */
+.splitSection,
+.splitGrid,
+.splitRight {
+  pointer-events: none;
+}
+
 .sectionTitle {
   font-family: var(--font-sans);
   font-size: clamp(2rem, 3.5vw, 2.75rem);
@@ -662,52 +672,36 @@
   position: relative;
   width: 100%;
   margin-top: 5rem;
-  margin-bottom: 6rem;
+  margin-bottom: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: visible;
 }
 
+/* Divider line spans the content column; its right end anchors the lanyard */
 .dividerLineWrapper {
   width: 100%;
   position: relative;
   z-index: 1;
 }
 
+/* The lanyard hangs from the RIGHT-MOST point of the divider line and reads as
+   a backdrop for the split section. The split section keeps a transform-induced
+   stacking context (animation fill-mode: forwards) and comes later in the DOM,
+   so it still paints above the card. z-index:0 (not -1) keeps the card above
+   .wrapper's background so it stays hit-testable / draggable. */
 .lanyardContainer {
   position: absolute;
-  top: -42px; /* Centers the lanyard top anchor right on the divider line */
-  right: 12%; /* Elegant right-leaning hanging position */
-  width: 380px;
-  height: 520px;
-  z-index: 10;
+  top: 0;
+  right: 0;
+  left: auto;
+  width: 220px;
+  height: 380px;
+  margin: 0;
+  z-index: 0;
   pointer-events: auto;
   overflow: visible;
-}
-
-@media (max-width: 1024px) {
-  .lanyardContainer {
-    right: 5%;
-    width: 320px;
-    height: 460px;
-  }
-}
-
-@media (max-width: 768px) {
-  .lanyardDividerSection {
-    margin-top: 3rem;
-    margin-bottom: 4rem;
-  }
-  .lanyardContainer {
-    position: relative;
-    top: -20px;
-    right: auto;
-    width: 100%;
-    max-width: 320px;
-    height: 440px;
-    margin: 0 auto;
-  }
 }
 
 

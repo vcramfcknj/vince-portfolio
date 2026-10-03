@@ -18,10 +18,42 @@
   border: 1px solid var(--border);
   border-radius: 1.5rem;
   background-color: var(--bg-surface);
-  overflow: auto; /* Allow scroll if content is too tall */
+  overflow: auto; /* Safety valve only: the layouts below keep content inside */
   cursor: grab;
   padding: 32px;
   flex-shrink: 0;
+}
+
+/* ── 640px – 1023px ──
+   The card wrapping this carousel has a fixed height, so the single-column
+   default (copy stacked over the animation panel) overshoots it by ~150px
+   and paints an inner scrollbar. Under the two-column breakpoint the panel
+   becomes a narrow side column, so the item needs max(text, panel) height
+   instead of the sum. */
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .carouselItem {
+    grid-template-columns: minmax(0, 1fr) clamp(150px, 28%, 240px);
+    align-items: stretch;
+  }
+
+  .carouselImageContainer {
+    min-height: 0;
+    height: 100%;
+  }
+}
+
+/* ── Phones ──
+   A stacked 250px panel never fits, so it becomes a short band and the
+   card is allowed to grow instead of scrolling (see ContainerScroll). */
+@media (max-width: 639.98px) {
+  .carouselItem {
+    gap: 1.25rem;
+    padding: 24px;
+  }
+
+  .carouselImageContainer {
+    min-height: 120px;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -99,18 +131,20 @@
   font-weight: 500;
 }
 
+/* Single source of truth per selector: this file used to declare these
+   blocks twice, and the later copy silently overrode the first one. */
 .carouselItemTitle {
-  margin-bottom: 0.25rem;
+  margin-bottom: 4px;
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--text);
   line-height: 1.2;
 }
 
 .carouselItemCompany {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-dim);
-  margin-bottom: 1.25rem;
+  margin-bottom: 12px;
   font-weight: 500;
 }
 
@@ -138,24 +172,34 @@
   font-weight: bold;
 }
 
+.carouselItemDescription {
+  font-size: 0.9rem;
+  color: var(--text-dimmer);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* Tags are pinned to the bottom of the copy column by margin-top: auto;
+   the action wrapper supplies the space underneath them. */
 .carouselTags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: auto;
-  margin-bottom: 1.5rem;
 }
 
+/* The tag keeps its icon and label apart: they are inline siblings, so
+   without flex + gap the SVG sits flush against the text. */
 .carouselTag {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--text-dim);
   background: var(--bg);
   border: 1px solid var(--border-mid);
-  padding: 6px 12px;
+  padding: 4px 10px;
   border-radius: 99px;
 }
 
@@ -164,74 +208,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-}
-
-.carouselIconContainer {
-  display: flex;
-  height: 48px;
-  width: 48px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background-color: var(--bg);
-  border: 1px solid var(--border-mid);
-  color: var(--text-dim);
-}
-
-.carouselIcon {
-  height: 24px;
-  width: 24px;
-  color: inherit;
-}
-
-.carouselItemDuration {
-  font-size: 0.85rem;
-  color: var(--text-dimmer);
-  font-weight: 500;
-}
-
-.carouselItemContent {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.carouselItemTitle {
-  margin-bottom: 4px;
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: var(--text);
-  line-height: 1.2;
-}
-
-.carouselItemCompany {
-  font-size: 0.95rem;
-  color: var(--text-dim);
-  margin-bottom: 12px;
-  font-weight: 500;
-}
-
-.carouselItemDescription {
-  font-size: 0.9rem;
-  color: var(--text-dimmer);
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-
-.carouselTags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: auto;
-}
-
-.carouselTag {
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  background: var(--bg);
-  border: 1px solid var(--border-mid);
-  padding: 4px 10px;
-  border-radius: 99px;
 }
 
 .carouselIndicatorsContainer {
@@ -270,6 +246,22 @@
 .carouselIndicator:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: 2px;
+}
+
+/* The dots are 8px, a fifth of the 44px touch target a finger needs. An
+   oversized transparent pseudo-element grows the hit area to 40px without
+   moving the layout by a single pixel. */
+@media (pointer: coarse) {
+  .carouselIndicator {
+    position: relative;
+  }
+
+  .carouselIndicator::before {
+    content: '';
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+  }
 }
 
 .carouselIndicator.active {

@@ -15,7 +15,13 @@
   overflow: hidden;
   background: transparent;
   user-select: none;
-  cursor: default;
+  cursor: default;  
+  opacity: 1;
+  transition: opacity 0.35s var(--ease-out-expo, ease);
+}
+
+.blobHidden {
+  opacity: 0;
 }
 
 .blob {

@@ -38,6 +38,9 @@ export default function Lanyard({
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  /* eslint-disable react-hooks/set-state-in-effect -- client-only hydration gate:
+     the WebGL canvas must not render during SSR, and isMobile is read from the
+     window. Both are legitimate mount-time syncs with external systems. */
   useEffect(() => {
     setMounted(true);
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -45,6 +48,7 @@ export default function Lanyard({
     window.addEventListener('resize', check, { passive: true });
     return () => window.removeEventListener('resize', check);
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   if (!mounted) return null;
 

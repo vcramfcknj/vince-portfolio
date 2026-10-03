@@ -3,9 +3,11 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import LaptopFrame from '@/components/ui/LaptopFrame'
 import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react'
 import styles from '../ProjectDetail.module.css'
+import ProjectLinks from '@/app/projects/ProjectLinks'
 
 export default function SpectaQRProjectPage() {
   
@@ -63,6 +65,8 @@ export default function SpectaQRProjectPage() {
               </a>
             </div>
 
+            <ProjectLinks slug="spectaqr" />
+
             <div className={styles.heroMetaGrid}>
               <div className={styles.metaBlock}>
                 <span className={styles.metaLabel}>Timeline</span>
@@ -77,13 +81,15 @@ export default function SpectaQRProjectPage() {
 
           <div className={styles.heroRight}>
             <div className={styles.heroShowcase}>
+              <LaptopFrame>
               <Image 
                 src="/projects/spectaqr/SpectaQR.jpg" 
                 alt="SpectaQR System Showcase"
-                fill
+                width={2048}
+                height={1463}
                 priority
-                className={styles.showcaseImage}
               />
+              </LaptopFrame>
             </div>
           </div>
 

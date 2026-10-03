@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useScroll } from '@/context/ScrollContext'
+import MagneticButton from './ui/MagneticButton'
+import { AVAILABILITY, RESUME } from '@/lib/site'
 
 function WorldIcon() {
   return (
@@ -103,7 +105,6 @@ function MarqueeTrack() {
 
 export default function Hero({ isFirstLoad = false }) {
   const { scrollProgress } = useScroll()
-  const [isMobile, setIsMobile] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [shouldAnimate, setShouldAnimate] = useState(false)
   const [animDuration, setAnimDuration] = useState(0.6)
@@ -111,9 +112,11 @@ export default function Hero({ isFirstLoad = false }) {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
-    const check = () => setIsMobile(window.innerWidth <= 768)
-    check()
-    window.addEventListener('resize', check, { passive: true })
+
+    /* Breakpoints used to be a JS `isMobile` flag read off window.innerWidth,
+       which only knew about 768px and never re-ran for anything else. Every
+       hero breakpoint now lives in CSS below, so resizing never needs a
+       re-render. */
 
     // Check if the curtain is down OR if this is the first load (Preloader will show)
     if (window.__isCurtainDown || isFirstLoad) {
@@ -124,21 +127,16 @@ export default function Hero({ isFirstLoad = false }) {
         setShouldAnimate(true)
       }
       window.addEventListener('curtain-exiting', handler)
-      return () => {
-        window.removeEventListener('resize', check)
-        window.removeEventListener('curtain-exiting', handler)
-      }
-    } else {
-      setShouldAnimate(true)
-      return () => window.removeEventListener('resize', check)
+      return () => window.removeEventListener('curtain-exiting', handler)
     }
+    setShouldAnimate(true)
   }, [isFirstLoad])
 
   return (
     <section
       id="home"
+      className="hero-root"
       style={{
-        height: '100vh',
         position: 'relative',
         overflow: 'hidden',
         background: '#999999',
@@ -157,59 +155,66 @@ export default function Hero({ isFirstLoad = false }) {
         {/* ── Right Text Block ── */}
         {mounted && (
           <div
-            className="hero-fade-right"
-            style={{
-              position: 'absolute',
-              right: isMobile ? '1.5rem' : '6rem',
-              top: isMobile ? '35%' : '45%',
-              transform: `translateY(${-50 + scrollProgress * 15}%)`,
-              zIndex: 10,
-              color: '#ffffff',
-              fontFamily: 'var(--font-inter)',
-              textAlign: isMobile ? 'right' : 'left',
-            }}
+            className="hero-copy"
+            style={{ '--hero-parallax': `${scrollProgress * 15}%` }}
           >
-            <div style={{ marginBottom: '1rem', opacity: 0.8, display: 'flex', justifyContent: isMobile ? 'flex-end' : 'flex-start' }}>
-              <ArrowDownRightIcon />
-            </div>
-            <div style={{
-              fontSize: isMobile ? '1.8rem' : '2.2rem',
-              fontWeight: 400,
-              lineHeight: 1.2,
-              letterSpacing: '-0.02em'
-            }}>
-              BS InfoTech Graduate<br />
-              & Developer
+            <div
+              className="hero-fade-right"
+              style={{
+                color: '#ffffff',
+                fontFamily: 'var(--font-inter)',
+              }}
+            >
+              <div className="hero-arrow">
+                <ArrowDownRightIcon />
+              </div>
+              <div className="hero-headline">
+                BS InfoTech Graduate<br />
+                & Developer
+              </div>
+
+              {/* Availability + résumé entry point. Both stay inside the existing
+                  text block so the portrait and marquee never shift. */}
+              <div className="hero-availability">
+                {AVAILABILITY}
+              </div>
+              {/* Anchored to the block's right edge so the button always sits in
+                  the gutter, never on top of the subject. */}
+              <div className="hero-cta">
+                <MagneticButton
+                  as="a"
+                  href={RESUME.pdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  text="Résumé"
+                  icon="↗"
+                  color="#ffffff"
+                  fillColor="#e8e4dc"
+                  textColorHover="#0c0c0c"
+                  borderColor="rgba(255,255,255,0.5)"
+                  bgColor="transparent"
+                />
+              </div>
             </div>
           </div>
         )}
 
         {/* ── Portrait ── */}
         {mounted && (
-          <div
-            className="hero-photo"
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: isMobile ? '90%' : '45%',
-              height: isMobile ? '65%' : '85%',
-              zIndex: 5,
-              opacity: 1,
-            }}
-          >
-            <Image
-              src="/images/vince.png"
-              alt="Vince Rubang"
-              fill
-              sizes="(max-width: 768px) 90vw, 45vw"
-              style={{
-                objectFit: 'contain',
-                objectPosition: 'bottom center',
-              }}
-              priority
-            />
+          <div className="hero-portrait">
+            <div className="hero-photo" style={{ width: '100%', height: '100%', position: 'relative' }}>
+              <Image
+                src="/images/vince.png"
+                alt="Vince Rubang"
+                fill
+                sizes="(max-width: 768px) 94vw, (max-width: 1440px) 50vw, 45vw"
+                style={{
+                  objectFit: 'contain',
+                  objectPosition: 'bottom center',
+                }}
+                priority
+              />
+            </div>
           </div>
         )}
 
@@ -230,26 +235,107 @@ export default function Hero({ isFirstLoad = false }) {
         </div>
 
         <style>{`
-        .hero-fade-left { animation: heroFadeInLeft 1s cubic-bezier(0.25, 1, 0.5, 1) 0.2s both; }
         .hero-fade-right { animation: heroFadeInRight 1s cubic-bezier(0.25, 1, 0.5, 1) 0.3s both; }
         .hero-photo { animation: heroFadeUp 1s cubic-bezier(0.25, 1, 0.5, 1) 0.1s both; }
         .hero-marquee { animation: heroFadeIn 1s ease 0.4s both; }
-        
+
+        /* 100vh is the *largest* viewport on iOS/Android Chrome — with the URL bar
+           up, the bottom of the hero (and the Résumé button) sits behind the
+           browser chrome. dvh tracks the visible area; vh stays as the fallback
+           for browsers that do not know the unit. */
+        .hero-root {
+          height: 100vh;
+          height: 100dvh;
+        }
+
+        /* Wide screens keep the original composition exactly: portrait centred at
+           45% wide, copy pinned to the right gutter. */
+        .hero-copy {
+          position: absolute;
+          top: 45%;
+          right: 6rem;
+          z-index: 10;
+          max-width: 46%;
+          transform: translateY(calc(-50% + var(--hero-parallax, 0%)));
+        }
+        .hero-arrow { margin-bottom: 1rem; opacity: 0.8; display: flex; justify-content: flex-start; }
+        .hero-headline { font-size: 2.2rem; font-weight: 400; line-height: 1.2; letter-spacing: -0.02em; }
+        .hero-availability {
+          margin-top: 1.1rem;
+          font-size: 0.66rem;
+          font-weight: 600;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.86);
+        }
+        .hero-cta { display: flex; justify-content: flex-end; margin-top: 1.15rem; }
+        .hero-portrait {
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 45%;
+          height: 85%;
+          z-index: 5;
+        }
+
+        /* ── 769px – 1440px ──
+           With the portrait centred, the copy's left edge (viewport − 508px)
+           reached the subject's face below roughly 1440 CSS px — on this machine
+           the CSS viewport is ~1280px because of the 2x DPR, so the text printed
+           straight over the face. Anchor the portrait to the left edge and hand
+           the whole right gutter to the copy: the two can no longer touch. */
+        @media (max-width: 1440px) {
+          .hero-portrait { left: 0; transform: none; width: min(50%, calc(100vw - 500px)); height: 78%; }
+          .hero-copy { right: 2rem; top: 50%; max-width: 44%; }
+          .hero-headline { font-size: clamp(1.5rem, 3.4vw, 2.2rem); }
+        }
+
+        /* ── ≤768px ── stack instead of overlay: copy in a band at the top, portrait
+           bottom-anchored with its height capped to whatever the copy leaves above
+           it, so it cannot climb into the text on short screens either. */
+        @media (max-width: 768px) {
+          .hero-portrait {
+            width: 94%;
+            height: min(78vh, calc(100vh - 260px));
+            height: min(78dvh, calc(100dvh - 260px));
+          }
+          .hero-copy {
+            left: 1.25rem;
+            right: 1.25rem;
+            top: 7%;
+            max-width: none;
+            text-align: right;
+            transform: translateY(var(--hero-parallax, 0%));
+          }
+          .hero-arrow { justify-content: flex-end; }
+          .hero-headline { font-size: clamp(1.45rem, 6.4vw, 1.9rem); }
+          .hero-availability { letter-spacing: 0.12em; }
+        }
+
+        /* Landscape phones: too short to stack, so go back to the split layout */
+        @media (max-width: 768px) and (max-height: 480px) {
+          .hero-portrait { left: 0; transform: none; width: 44%; height: 96%; }
+          .hero-copy { left: auto; top: 50%; right: 1rem; max-width: 50%; transform: translateY(calc(-50% + var(--hero-parallax, 0%))); }
+          .hero-headline { font-size: clamp(1.15rem, 4.6vh, 1.5rem); }
+          .hero-cta { margin-top: 0.8rem; }
+        }
+
         @keyframes heroFadeInRight {
-          from { opacity: 0; transform: translate(20px, -50%); }
-          to   { opacity: 1; transform: translate(0, -50%); }
+          from { opacity: 0; transform: translateX(20px); }
+          to   { opacity: 1; transform: translateX(0); }
         }
         @keyframes heroFadeUp {
-          from { opacity: 0; transform: translate(-50%, 20px); }
-          to   { opacity: 1; transform: translate(-50%, 0); }
+          from { opacity: 0; transform: translateY(20px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes heroFadeIn {
           from { opacity: 0; }
           to   { opacity: 1; }
         }
-        
+
         @media (prefers-reduced-motion: reduce) {
-          .hero-fade-left, .hero-fade-right, .hero-photo, .hero-marquee { animation: none; }
+          .hero-fade-right, .hero-photo, .hero-marquee { animation: none; }
         }
       `}</style>
       </motion.div>

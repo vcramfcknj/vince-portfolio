@@ -11,6 +11,7 @@ export default function MagneticButton({
   className = '',
   onClick,
   href,
+  as,
   color = '#0c0c0c',
   fillColor = '#0c0c0c',
   textColorHover = '#ffffff',
@@ -100,7 +101,8 @@ export default function MagneticButton({
   };
 
   const isInternalLink = href && href.startsWith('/');
-  const Component = isInternalLink ? Link : href ? 'a' : 'button';
+  const Component = as || (isInternalLink ? Link : href ? 'a' : 'button');
+  const linkProps = href ? { href } : {};
 
   return (
     <Component
@@ -110,7 +112,7 @@ export default function MagneticButton({
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
       onClick={onClick}
-      href={href}
+      {...linkProps}
       style={{
         '--btn-color': color,
         '--btn-border': borderColor,

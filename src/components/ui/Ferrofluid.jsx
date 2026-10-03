@@ -85,6 +85,8 @@ export default function Ferrofluid({ color = '#4F46E5' }) {
 
   useEffect(() => {
     if (!containerRef.current) return;
+    // Capture the node so the cleanup never reads a stale/changed ref value.
+    const container = containerRef.current;
 
     let isActive = true;
     let animationId;
@@ -174,8 +176,8 @@ export default function Ferrofluid({ color = '#4F46E5' }) {
       if (gl) {
         const ext = gl.getExtension('WEBGL_lose_context');
         if (ext) ext.loseContext();
-        if (containerRef.current?.contains(gl.canvas)) {
-          containerRef.current.removeChild(gl.canvas);
+        if (container?.contains(gl.canvas)) {
+          container.removeChild(gl.canvas);
         }
       }
     };

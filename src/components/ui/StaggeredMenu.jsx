@@ -445,8 +445,7 @@ export const StaggeredMenu = ({
                     <Link
                       className="sm-panel-item"
                       href={it.link}
-                      label={it.label}
-                      aria-label={it.ariaLabel}
+                      aria-label={it.ariaLabel || it.label}
                       data-index={idx + 1}
                       onClick={closeMenu}
                     >
@@ -525,13 +524,23 @@ export const StaggeredMenu = ({
 .sm-scope .sm-socials-link:focus-visible { outline: 2px solid var(--border); outline-offset: 3px; }
 .sm-scope .sm-panel-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
 .sm-scope .sm-panel-itemWrap { position: relative; overflow: hidden; line-height: 1; }
-.sm-scope .sm-panel-item { position: relative; cursor: pointer; line-height: 1; display: inline-block; text-decoration: none; padding-right: 1.4em; color: var(--text); font-family: var(--font-bebas); font-size: 3.5rem; font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; transition: color 0.25s ease; }
+.sm-scope .sm-panel-item { position: relative; cursor: pointer; line-height: 1; display: inline-block; text-decoration: none; padding-right: 1.4em; color: var(--text); font-family: var(--font-bebas); font-size: min(3.5rem, calc((100vh - 220px) / 6.6)); font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; transition: color 0.25s ease; }
 .sm-scope .sm-panel-itemLabel { display: inline-block; will-change: transform; transform-origin: 50% 100%; }
 .sm-scope .sm-panel-item:hover { color: var(--accent); }
 .sm-scope .sm-panel-list[data-numbering] { counter-reset: smItem; }
 .sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after { counter-increment: smItem; content: "0" counter(smItem, decimal); position: absolute; top: 0.2em; right: -0.2em; font-size: 1rem; font-weight: 500; color: var(--text-dim); font-family: var(--font-sans); pointer-events: none; user-select: none; opacity: var(--sm-num-opacity, 0); transition: color 0.25s ease; }
 .sm-scope .sm-panel-item:hover::after { color: var(--accent); }
 @media (max-width: 1024px) { .sm-scope .staggered-menu-panel { width: 100%; left: 0; right: 0; padding: 8em 2em 2em 2em; } .sm-scope .sm-prelayers { width: 100%; } }
+/* Short viewports: the 7-8em header clearance plus a fixed 3.5rem type scale pushed
+   the last nav item and the whole socials row below the fold, so the menu looked like
+   it was missing links (it only hid them behind an internal scroll). Trade header
+   clearance and gaps for height whenever the window is shorter than 700px. */
+@media (max-height: 700px) {
+  .sm-scope .staggered-menu-panel { padding-top: 4em; padding-bottom: 1em; }
+  .sm-scope .sm-panel-list { gap: 0.6rem; }
+  .sm-scope .sm-panel-inner { gap: 1rem; }
+  .sm-scope .sm-socials { padding-top: 1rem; }
+}
 @media (min-width: 821px) {
   .sm-scope .staggered-menu-header,
   .sm-scope .staggered-menu-header.scrolled { background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-bottom: none !important; justify-content: flex-end; }

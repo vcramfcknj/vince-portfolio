@@ -4,6 +4,30 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { Typewriter } from './ui/TypewriterText'
 import MagneticButton from './ui/MagneticButton'
+import { AVAILABILITY, RESUME } from '@/lib/site'
+
+// NOTE: this hero is not mounted anywhere — HomeContent renders EnhancedHero.
+// Kept in sync with the live hero so it stays a valid alternative, but edit
+// EnhancedHero.jsx for changes that actually show up on the site.
+
+function AvailabilityTag({ mobile = false }) {
+  return (
+    <p
+      className="hero-availability"
+      style={{
+        margin: mobile ? '0.7rem 0 0' : '0.9rem 0 0',
+        fontSize: mobile ? '0.58rem' : '0.65rem',
+        fontWeight: 600,
+        letterSpacing: '0.14em',
+        textTransform: 'uppercase',
+        color: 'rgba(12,12,12,0.6)',
+        fontFamily: 'var(--font-sans)',
+      }}
+    >
+      {AVAILABILITY}
+    </p>
+  )
+}
 
 export default function Hero() {
   const marqueeRef = useRef(null)
@@ -176,7 +200,7 @@ export default function Hero() {
           marginBottom: '0.75rem',
           fontFamily: 'var(--font-sans)',
         }}>
-          BS IT Student
+          BS IT Graduate
         </p>
         <h1 style={{
           fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
@@ -199,6 +223,7 @@ export default function Hero() {
             loop={true}
           />
         </h1>
+        <AvailabilityTag />
       </div>
 
       {/* Arrow indicator */}
@@ -232,7 +257,7 @@ export default function Hero() {
           marginBottom: '0.4rem',
           fontFamily: 'var(--font-sans)',
         }}>
-          BS IT Student
+          BS IT Graduate
         </p>
         <h1 style={{
           fontSize: '1.4rem',
@@ -255,6 +280,7 @@ export default function Hero() {
             loop={true}
           />
         </h1>
+        <AvailabilityTag mobile />
       </div>
 
       {/* Bottom-right Resume button */}
@@ -265,13 +291,17 @@ export default function Hero() {
         zIndex: 3,
       }}>
         <MagneticButton 
-          href="#" 
+          as="a"
+          href={RESUME.pdf} 
+          target="_blank"
+          rel="noopener noreferrer"
           text="Résumé" 
           icon="↗"
           color="#e8e4dc"
           fillColor="#e8e4dc"
           textColorHover="#0c0c0c"
           borderColor="rgba(232,228,220,0.5)"
+          bgColor="transparent"
         />
       </div>
 

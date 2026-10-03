@@ -5,6 +5,7 @@ import styles from './ScrollToTop.module.css'
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false)
+  const [lift, setLift] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,13 +24,31 @@ export default function ScrollToTop() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  /* The footer's right-hand column (legal links) lives exactly where this
+     button sits, so at the bottom of the page the two overlap — which also
+     makes the last link unclickable. Raise the button by the footer's own
+     height while the footer is on screen. */
+  useEffect(() => {
+    const footer = document.querySelector('footer')
+    if (!footer || typeof IntersectionObserver === 'undefined') return undefined
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setLift(entry.isIntersecting ? Math.ceil(entry.boundingClientRect.height) : 0)
+    }, { threshold: 0.01 })
+
+    observer.observe(footer)
+    return () => observer.disconnect()
+  }, [])
+
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    if (window.__lenis) window.__lenis.scrollTo(0, { duration: 1.2 })
+    else window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
     <button 
       className={`${styles.scrollToTop} ${visible ? styles.visible : ''}`} 
+      style={{ '--scrolltop-lift': `${lift}px` }}
       onClick={scrollToTop}
       aria-label="Scroll to top"
     >
