@@ -113,8 +113,8 @@ export default function Preloader({ onComplete, onExit }: PreloaderProps) {
       variants={slideUp}
       initial="initial"
       animate={isExiting ? "exit" : "initial"}
-      className="flex items-center justify-center bg-black"
-      style={{ zIndex: 9999, position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}
+      className="flex items-center justify-center"
+      style={{ zIndex: 9999, position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#17252a' }}
     >
       {dimension.width > 0 && (
         <>
@@ -122,12 +122,12 @@ export default function Preloader({ onComplete, onExit }: PreloaderProps) {
             variants={opacity}
             initial="initial"
             animate="enter"
-            style={{ position: 'relative', zIndex: 10, color: 'white', fontSize: '2rem', fontWeight: 400, display: 'flex', alignItems: 'center' }}
+            style={{ position: 'relative', zIndex: 10, color: '#def2f1', fontSize: '2rem', fontWeight: 400, display: 'flex', alignItems: 'center' }}
           >
             {words[index]}
           </motion.p>
           <svg style={{ position: 'absolute', top: 0, width: '100%', height: 'calc(100% + 300px)' }}>
-            <motion.path variants={curve} initial="initial" animate={isExiting ? "exit" : "initial"} fill="#070b13" />
+            <motion.path variants={curve} initial="initial" animate={isExiting ? "exit" : "initial"} fill="#0e1b1f" />
           </svg>
         </>
       )}

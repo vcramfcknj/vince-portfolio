@@ -15,7 +15,7 @@ const projects = [
     title: 'C.H.E.C.K',
     category: 'IoT / Full-Stack',
     src: '/projects/check/check%20landing.png',
-    color: '#8C8C8C',
+    color: '#3AAFA9',
     role: 'Lead Developer',
     link: '/projects/check'
   },
@@ -24,7 +24,7 @@ const projects = [
     title: 'HR System',
     category: 'AI / Web App',
     src: '/projects/it-seminar/Hr-System.png',
-    color: '#EFE8D3',
+    color: '#DEF2F1',
     role: 'Developer',
     link: '/projects/it-seminar'
   },
@@ -33,7 +33,7 @@ const projects = [
     title: 'Erovoutika',
     category: 'Full-Stack',
     src: '/projects/erovoutika/Screenshot%202026-06-11%20161220.png',
-    color: '#343A40',
+    color: '#2B7A78',
     role: 'Intern',
     link: '/projects/erovoutika'
   }

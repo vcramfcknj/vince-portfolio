@@ -87,7 +87,7 @@ function MarqueeTrack() {
     fontFamily: 'var(--font-inter), sans-serif',
     fontWeight: 400,
     letterSpacing: '-0.03em',
-    color: '#ffffff',
+    color: '#def2f1',
     whiteSpace: 'nowrap',
     paddingRight: '1em', /* space proportional to font size */
     userSelect: 'none',
@@ -139,7 +139,7 @@ export default function Hero({ isFirstLoad = false }) {
       style={{
         position: 'relative',
         overflow: 'hidden',
-        background: '#999999',
+        background: '#2b7a78',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -161,7 +161,7 @@ export default function Hero({ isFirstLoad = false }) {
             <div
               className="hero-fade-right"
               style={{
-                color: '#ffffff',
+                color: '#feffff',
                 fontFamily: 'var(--font-inter)',
               }}
             >
@@ -188,10 +188,10 @@ export default function Hero({ isFirstLoad = false }) {
                   rel="noopener noreferrer"
                   text="Résumé"
                   icon="↗"
-                  color="#ffffff"
-                  fillColor="#e8e4dc"
-                  textColorHover="#0c0c0c"
-                  borderColor="rgba(255,255,255,0.5)"
+                  color="#feffff"
+                  fillColor="#def2f1"
+                  textColorHover="#17252a"
+                  borderColor="rgba(254,255,255,0.5)"
                   bgColor="transparent"
                 />
               </div>
@@ -266,7 +266,7 @@ export default function Hero({ isFirstLoad = false }) {
           font-weight: 600;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(255, 255, 255, 0.86);
+          color: rgba(254, 255, 255, 0.86);
         }
         .hero-cta { display: flex; justify-content: flex-end; margin-top: 1.15rem; }
         .hero-portrait {

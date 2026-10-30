@@ -143,7 +143,7 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: #455CE9;
+  background-color: var(--accent, #3AAFA9);
   position: fixed;
   display: flex;
   align-items: center;
@@ -161,7 +161,7 @@
   align-items: center;
   justify-content: center;
   z-index: 102;
-  color: white;
+  color: var(--bg);
   font-weight: bold;
   font-size: 14px;
   letter-spacing: 0.05em;

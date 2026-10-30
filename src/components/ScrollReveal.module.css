@@ -1,0 +1,21 @@
+/* Shared fade-up reveal used by ScrollReveal.
+   Bidirectional: fades in when entering the viewport (scroll down OR up)
+   and back out when leaving, driven by useScrollReveal's isIntersecting. */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

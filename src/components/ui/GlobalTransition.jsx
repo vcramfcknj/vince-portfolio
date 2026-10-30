@@ -153,7 +153,7 @@ export default function GlobalTransition({ children }) {
                 handleCoverComplete()
               }
             }}
-            className="flex items-center justify-center bg-black"
+            className="flex items-center justify-center"
             style={{
               zIndex: 9998,
               position: 'fixed',
@@ -164,7 +164,7 @@ export default function GlobalTransition({ children }) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: '#000000',
+              backgroundColor: '#17252a',
               pointerEvents: 'auto',
               willChange: 'transform',
             }}
@@ -176,7 +176,7 @@ export default function GlobalTransition({ children }) {
               style={{
                 position: 'relative',
                 zIndex: 10,
-                color: 'white',
+                color: '#def2f1',
                 fontSize: '2.5rem',
                 fontWeight: 400,
                 display: 'flex',
@@ -191,7 +191,7 @@ export default function GlobalTransition({ children }) {
             <svg style={{ position: 'absolute', top: '100%', left: 0, width: '100%', height: '300px', willChange: 'transform', transform: 'translateZ(0)' }}>
               <path
                 d={`M0 0 L${dimension.width} 0 L${dimension.width} 0 Q${dimension.width / 2} 300 0 0 L0 0`}
-                fill="#000000"
+                fill="#17252a"
               />
             </svg>
 
@@ -199,7 +199,7 @@ export default function GlobalTransition({ children }) {
             <svg style={{ position: 'absolute', bottom: '100%', left: 0, width: '100%', height: '300px', willChange: 'transform', transform: 'rotate(180deg) translateZ(0)' }}>
               <path
                 d={`M0 0 L${dimension.width} 0 L${dimension.width} 0 Q${dimension.width / 2} 300 0 0 L0 0`}
-                fill="#000000"
+                fill="#17252a"
               />
             </svg>
           </motion.div>

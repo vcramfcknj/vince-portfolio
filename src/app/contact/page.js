@@ -58,7 +58,7 @@ const isValidEmail = (email) => {
 
 export default function ContactPage() {
   const { theme } = useTheme()
-  const splashColor = theme === 'light' ? '#000000' : '#ffffff'
+  const splashColor = theme === 'light' ? '#17252a' : '#def2f1'
   
   const [formData, setFormData] = useState(emptyForm)
   const [status, setStatus] = useState("idle");

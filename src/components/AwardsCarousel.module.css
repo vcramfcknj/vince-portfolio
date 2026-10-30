@@ -243,6 +243,28 @@
   background: white;
 }
 
+/* Ink-teal shade along the bottom edge of each certificate — masks the
+   signatures on the scanned documents without touching the images. Uses
+   the palette's #17252A instead of pure black so it reads as design,
+   not a blackout bar. */
+.cardContent::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34%;
+  background: linear-gradient(
+    180deg,
+    rgba(23, 37, 42, 0) 0%,
+    rgba(23, 37, 42, 0.62) 22%,
+    rgba(23, 37, 42, 0.94) 42%,
+    #17252a 55%
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
 .fallbackIcon {
   width: 100%;
   height: 100%;

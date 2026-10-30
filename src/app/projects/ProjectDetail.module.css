@@ -70,14 +70,14 @@
 .categoryTag {
   display: inline-block;
   padding: 0.25rem 0.75rem;
-  background: rgba(69, 92, 233, 0.12);
+  background: rgba(58, 175, 169, 0.12);
   color: var(--accent);
   border-radius: 99px;
   font-size: 0.725rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border: 1px solid rgba(69, 92, 233, 0.25);
+  border: 1px solid rgba(58, 175, 169, 0.25);
   margin-bottom: 1.25rem;
 }
 

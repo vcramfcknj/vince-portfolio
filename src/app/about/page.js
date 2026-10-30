@@ -9,6 +9,7 @@ import GlareHover from '@/components/ui/GlareHover'
 import DynamicLanyard from '@/components/ui/DynamicLanyard'
 import { FaEarthAmericas } from 'react-icons/fa6'
 import TechIcon from '@/components/techIcons'
+import ScrollReveal from '@/components/ScrollReveal'
 import styles from './AboutPage.module.css'
 
 export const metadata = {
@@ -21,15 +22,15 @@ export default function AboutPage() {
       
       {/* ── HERO SECTION ── */}
       <section className={styles.heroSection}>
-        <div className={styles.heroTop}>
+        <ScrollReveal className={styles.heroTop} threshold={0.08}>
           <h1 className={styles.heroHugeTitle}>
             A passionate developer,<br />
             IT graduate, and<br />
             lifelong learner.
           </h1>
-        </div>
+        </ScrollReveal>
 
-        <div className={styles.heroDividerContainer}>
+        <ScrollReveal className={styles.heroDividerContainer} delay={100}>
           <hr className={styles.heroDivider} />
           <div className={styles.heroBadge}>
             <CircularText
@@ -40,9 +41,9 @@ export default function AboutPage() {
             />
             <FaEarthAmericas className={styles.innerGlobe} />
           </div>
-        </div>
+        </ScrollReveal>
 
-        <div className={styles.heroBottomGrid}>
+        <ScrollReveal className={styles.heroBottomGrid} delay={200}>
           <div className={styles.heroBottomLeft}>
             <div className={styles.heroArrow}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -70,16 +71,16 @@ export default function AboutPage() {
               />
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* ── DRIVES SECTION ── */}
       <section className={styles.drivesSection}>
-        <h2 className={styles.drivesTitle}>
+        <ScrollReveal as="h2" className={styles.drivesTitle} threshold={0.08}>
           What Drives Me<span className={styles.ellipsis}>...</span>
-        </h2>
+        </ScrollReveal>
         
-        <div className={styles.drivesGrid}>
+        <ScrollReveal className={styles.drivesGrid} delay={100}>
           <GlareHover 
             className={styles.drivesCard} 
             background="transparent" 
@@ -119,18 +120,18 @@ export default function AboutPage() {
               Developing software that goes beyond code to deliver real value and seamless user experiences.
             </p>
           </GlareHover>
-        </div>
+        </ScrollReveal>
       </section>
 
 
       {/* ── FULL WIDTH: AWARDS & CERTIFICATIONS ── */}
       <section id="awards" className={styles.fullWidthSection}>
-        <div className={styles.fullWidthHeader}>
+        <ScrollReveal as="div" className={styles.fullWidthHeader} threshold={0.08}>
             <h2 className={styles.drivesTitle} style={{ marginBottom: '2rem' }}>What I&apos;ve Earned</h2>
-          </div>
-          <div className={styles.carouselWrapper}>
+          </ScrollReveal>
+          <ScrollReveal className={styles.carouselWrapper} delay={100}>
             <AwardsCarousel />
-          </div>
+          </ScrollReveal>
       </section>
 
 
@@ -156,7 +157,7 @@ export default function AboutPage() {
       <section className={styles.splitSection}>
           <div className={styles.splitGrid}>
             
-            <div className={styles.splitLeft} style={{ pointerEvents: 'auto' }}>
+            <ScrollReveal className={styles.splitLeft} style={{ pointerEvents: 'auto' }} threshold={0.08}>
               <h2 className={styles.sectionTitle}>Tech Stack Showcase</h2>
               <div className={styles.techTagsWrap}>
                 <Marquee pauseOnHover className={styles.marqueeRow}>
@@ -192,9 +193,9 @@ export default function AboutPage() {
                   ))}
                 </Marquee>
               </div>
-            </div>
+            </ScrollReveal>
 
-            <div className={styles.splitRight}>
+            <ScrollReveal className={styles.splitRight} delay={150} threshold={0.08}>
               <h2 className={styles.sectionTitle}>What I&apos;m Currently Doing</h2>
               <ul className={styles.doingList}>
                 <li>
@@ -222,20 +223,20 @@ export default function AboutPage() {
                   <span>Seeking new opportunities in tech</span>
                 </li>
               </ul>
-            </div>
+            </ScrollReveal>
             
           </div>
         </section>
 
         {/* ── QUOTE ── */}
-        <section className={styles.quoteSection} style={{ position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+        <ScrollReveal as="section" className={styles.quoteSection} threshold={0.1} style={{ position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
           <blockquote className={styles.quoteBlock} style={{ pointerEvents: 'auto' }}>
             <span className={styles.quoteMarkLeft}>&quot;</span>
             Code is a medium, but impact is the goal.
             <span className={styles.quoteMarkRight}>&quot;</span>
           </blockquote>
           <div className={styles.quoteAuthor} style={{ pointerEvents: 'auto' }}>— Vince Rubang</div>
-        </section>
+        </ScrollReveal>
 
     </div>
   )

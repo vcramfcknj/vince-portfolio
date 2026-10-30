@@ -109,7 +109,7 @@ function ContactContent({ pathname }) {
         style={{ y }}
       >
         <div className={styles.ferroFluidBackground}>
-          <Ferrofluid key={pathname} color="#1a1a1a" />
+          <Ferrofluid key={pathname} color="#17252a" />
         </div>
         <div className={styles.inner}>
 
