@@ -46,6 +46,12 @@ export default function GlobalTransition({ children }) {
       const anchor = e.target.closest('a')
       if (!anchor) return
 
+      // Components that own their first click (the projects accordion expands
+      // a collapsed panel before it navigates) opt out via data-gt-defer.
+      // This listener runs in the capture phase — before React handlers — so
+      // e.defaultPrevented is still false here and can't be the signal.
+      if (anchor.hasAttribute('data-gt-defer')) return
+
       const href = anchor.getAttribute('href')
 
       if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) return

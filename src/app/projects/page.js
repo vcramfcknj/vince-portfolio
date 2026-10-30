@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import gsap from 'gsap'
-import { LayoutGrid, AlignJustify } from 'lucide-react'
+import { LayoutGrid, AlignJustify, Columns3 } from 'lucide-react'
 import styles from './Projects.module.css'
 import MagneticButton from '@/components/ui/MagneticButton'
 
@@ -58,9 +58,55 @@ const scaleAnimation = {
   closed: { scale: 0, x: "-50%", y: "-50%", transition: { duration: 0.4, ease: [0.32, 0, 0.67, 0] } }
 }
 
+/* EIRA-style horizontal accordion panel: the active panel grows, the rest
+   collapse to narrow strips with a vertical title. First click expands,
+   clicking the already-active panel navigates to the project. */
+function AccordionPanel({ proj, index, isActive, onActivate }) {
+  return (
+    <motion.div
+      className={`${styles.panel} ${isActive ? styles.panelActive : ''}`}
+      animate={{ flex: isActive ? 5 : 1.15 }}
+      transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+      onMouseEnter={onActivate}
+    >
+      <Link
+        href={proj.href}
+        aria-label={proj.title}
+        aria-expanded={isActive}
+        className={styles.panelLink}
+        data-gt-defer={isActive ? undefined : 'true'}
+        onClick={(e) => {
+          if (!isActive) {
+            e.preventDefault()
+            onActivate()
+          }
+        }}
+      >
+        <Image
+          src={proj.image}
+          alt={proj.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className={styles.panelImage}
+        />
+        <div className={styles.panelOverlay} />
+        <span className={styles.panelIndex}>{String(index + 1).padStart(2, '0')}</span>
+        <h2 className={styles.panelTitleV}>{proj.title}</h2>
+        <div className={styles.panelBody}>
+          <span className={styles.panelPill}>{proj.category}</span>
+          <h2 className={styles.panelTitleH}>{proj.title}</h2>
+          <p className={styles.panelMeta}>{proj.role} · {proj.year}</p>
+          <span className={styles.panelCta}>View project <span aria-hidden="true">→</span></span>
+        </div>
+      </Link>
+    </motion.div>
+  )
+}
+
 export default function ProjectsPage() {
   const [view, setView] = useState('list')
   const [filter, setFilter] = useState('all') // 'all', 'design', 'development'
+  const [accordionIndex, setAccordionIndex] = useState(0)
   const [modal, setModal] = useState({ active: false, index: 0 })
   const { active, index } = modal
 
@@ -171,10 +217,40 @@ export default function ProjectsPage() {
               borderColor="var(--border-mid)"
               className={styles.iconBtn}
             />
+            <MagneticButton 
+              text={<Columns3 size={20} strokeWidth={1.5} />} 
+              icon={null}
+              onClick={() => setView('accordion')}
+              color={view === 'accordion' ? 'var(--bg)' : 'var(--text)'}
+              bgColor={view === 'accordion' ? 'var(--text)' : 'transparent'}
+              fillColor="var(--text)"
+              textColorHover="var(--bg)"
+              borderColor="var(--border-mid)"
+              className={styles.iconBtn}
+            />
           </div>
         </div>
       </header>
 
+      {view === 'accordion' ? (
+        <motion.div
+          className={styles.accordion}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+          {filteredProjects.map((proj, i) => (
+            <AccordionPanel
+              key={proj.id}
+              proj={proj}
+              index={i}
+              isActive={i === accordionIndex}
+              onActivate={() => setAccordionIndex(i)}
+            />
+          ))}
+        </motion.div>
+      ) : (
       <div className={view === 'grid' ? styles.grid : styles.listView}>
         {view === 'list' && (
           <div className={styles.listHeader}>
@@ -233,6 +309,7 @@ export default function ProjectsPage() {
           ))}
         </AnimatePresence>
       </div>
+      )}
 
       {/* Floating Image Modal for List View */}
       {view === 'list' && (

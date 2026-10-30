@@ -120,11 +120,23 @@ export default function BlobCursor({
 
   useEffect(() => {
     measure();
+    // Coalesce scroll-driven re-measures into one per frame: measure() reads
+    // getBoundingClientRect, and doing that on every raw scroll event adds a
+    // forced layout pass per frame, which makes scrolling feel ruggish.
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        measure();
+      });
+    };
     window.addEventListener('resize', measure);
-    window.addEventListener('scroll', measure, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       window.removeEventListener('resize', measure);
-      window.removeEventListener('scroll', measure);
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [measure]);
 

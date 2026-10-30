@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { useScroll } from '@/context/ScrollContext'
 import MagneticButton from './ui/MagneticButton'
 import { AVAILABILITY, RESUME } from '@/lib/site'
 
@@ -104,7 +103,8 @@ function MarqueeTrack() {
 }
 
 export default function Hero({ isFirstLoad = false }) {
-  const { scrollProgress } = useScroll()
+  const copyRef = useRef(null)
+  const marqueeRef = useRef(null)
   const [mounted, setMounted] = useState(false)
   const [shouldAnimate, setShouldAnimate] = useState(false)
   const [animDuration, setAnimDuration] = useState(0.6)
@@ -132,6 +132,54 @@ export default function Hero({ isFirstLoad = false }) {
     setShouldAnimate(true)
   }, [isFirstLoad])
 
+  /* Scroll-driven parallax/fade used to flow through ScrollContext React state,
+     which re-rendered this whole (heaviest) section on every Lenis frame and
+     made scrolling feel ruggish. Now the values are written straight to the DOM
+     as a CSS variable/inline opacity from the scroll callback — no re-renders. */
+  useEffect(() => {
+    const apply = (scroll) => {
+      const progress = Math.min(scroll / 2000, 1)
+      if (copyRef.current) {
+        copyRef.current.style.setProperty('--hero-parallax', `${progress * 15}%`)
+      }
+      if (marqueeRef.current) {
+        marqueeRef.current.style.opacity = String(Math.max(0, 1 - progress * 0.8))
+      }
+    }
+
+    const onLenisScroll = (e) => apply(e.scroll)
+    const onNativeScroll = () => apply(window.scrollY)
+
+    const cleanups = []
+    let rafId = null
+    let tries = 0
+
+    const attach = () => {
+      const lenis = window.__lenis
+      if (lenis) {
+        lenis.on('scroll', onLenisScroll)
+        cleanups.push(() => lenis.off('scroll', onLenisScroll))
+        apply(window.scrollY)
+        return
+      }
+      // Child effects run before SmoothScroll (the parent) creates Lenis, so
+      // wait a few frames before falling back to the native scroll event.
+      if (tries++ < 60) {
+        rafId = requestAnimationFrame(attach)
+        return
+      }
+      window.addEventListener('scroll', onNativeScroll, { passive: true })
+      cleanups.push(() => window.removeEventListener('scroll', onNativeScroll))
+      apply(window.scrollY)
+    }
+    attach()
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId)
+      cleanups.forEach((fn) => fn())
+    }
+  }, [])
+
   return (
     <section
       id="home"
@@ -156,7 +204,7 @@ export default function Hero({ isFirstLoad = false }) {
         {mounted && (
           <div
             className="hero-copy"
-            style={{ '--hero-parallax': `${scrollProgress * 15}%` }}
+            ref={copyRef}
           >
             <div
               className="hero-fade-right"
@@ -221,6 +269,7 @@ export default function Hero({ isFirstLoad = false }) {
         {/* ── Background Marquee ── */}
         <div
           className="hero-marquee"
+          ref={marqueeRef}
           style={{
             position: 'absolute',
             bottom: '5%',
@@ -228,16 +277,20 @@ export default function Hero({ isFirstLoad = false }) {
             width: '100%',
             zIndex: 2, /* BEHIND the portrait */
             pointerEvents: 'none',
-            opacity: Math.max(0, 1 - scrollProgress * 0.8),
           }}
         >
-          <MarqueeTrack />
+          {/* Fade-in lives on an inner wrapper: an animation with fill-mode
+              "both" outranks inline styles, so scrolling opacity onto the same
+              element would be overridden by the animation's final keyframe. */}
+          <div className="hero-marquee-fade">
+            <MarqueeTrack />
+          </div>
         </div>
 
         <style>{`
         .hero-fade-right { animation: heroFadeInRight 1s cubic-bezier(0.25, 1, 0.5, 1) 0.3s both; }
         .hero-photo { animation: heroFadeUp 1s cubic-bezier(0.25, 1, 0.5, 1) 0.1s both; }
-        .hero-marquee { animation: heroFadeIn 1s ease 0.4s both; }
+        .hero-marquee-fade { animation: heroFadeIn 1s ease 0.4s both; }
 
         /* 100vh is the *largest* viewport on iOS/Android Chrome — with the URL bar
            up, the bottom of the hero (and the Résumé button) sits behind the
@@ -293,17 +346,19 @@ export default function Hero({ isFirstLoad = false }) {
 
         /* ── ≤768px ── stack instead of overlay: copy in a band at the top, portrait
            bottom-anchored with its height capped to whatever the copy leaves above
-           it, so it cannot climb into the text on short screens either. */
+           it, so it cannot climb into the text on short screens either. The 300px
+           reservation (was 260px) keeps the copy's Résumé row clear of the photo's
+           top edge — a 13px box overlap measured at 390x844. */
         @media (max-width: 768px) {
           .hero-portrait {
             width: 94%;
-            height: min(78vh, calc(100vh - 260px));
-            height: min(78dvh, calc(100dvh - 260px));
+            height: min(78vh, calc(100vh - 300px));
+            height: min(78dvh, calc(100dvh - 300px));
           }
           .hero-copy {
             left: 1.25rem;
             right: 1.25rem;
-            top: 7%;
+            top: 6%;
             max-width: none;
             text-align: right;
             transform: translateY(var(--hero-parallax, 0%));
@@ -335,7 +390,7 @@ export default function Hero({ isFirstLoad = false }) {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .hero-fade-right, .hero-photo, .hero-marquee { animation: none; }
+          .hero-fade-right, .hero-photo, .hero-marquee-fade { animation: none; }
         }
       `}</style>
       </motion.div>

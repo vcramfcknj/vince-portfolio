@@ -57,7 +57,9 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth intentionally removed — it double-smooths against
+     Lenis (SmoothScroll.jsx) and makes wheel scrolling feel ruggish. */
+  scroll-behavior: auto;
 }
 
 body {

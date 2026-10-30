@@ -4,7 +4,6 @@ import Contact from '@/components/Contact'
 import ScrollToTop from '@/components/ui/ScrollToTop'
 import SmoothScroll from '@/components/SmoothScroll'
 import { ThemeProvider } from '@/context/ThemeContext'
-import { ScrollProvider } from '@/context/ScrollContext'
 import GlobalTransition from '@/components/ui/GlobalTransition'
 import { Bebas_Neue, Inter, Playfair_Display } from 'next/font/google'
 import { CONTACT, SITE_URL, SOCIALS } from '@/lib/site'
@@ -116,14 +115,12 @@ export default function RootLayout({ children }) {
         />
         <SmoothScroll>
           <ThemeProvider>
-            <ScrollProvider>
-              <GlobalTransition>
-                <Navbar />
-                {children}
-                <ScrollToTop />
-                <Contact />
-              </GlobalTransition>
-            </ScrollProvider>
+            <GlobalTransition>
+              <Navbar />
+              {children}
+              <ScrollToTop />
+              <Contact />
+            </GlobalTransition>
           </ThemeProvider>
         </SmoothScroll>
       </body>
